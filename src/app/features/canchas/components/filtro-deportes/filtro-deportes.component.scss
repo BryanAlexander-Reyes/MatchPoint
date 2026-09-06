@@ -1,0 +1,23 @@
+.chip-row {
+  display: flex; gap: 8px; overflow-x: auto; padding: 2px 2px 12px;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.chip {
+  --c: var(--brand);
+  flex: none; display: flex; align-items: center; gap: 7px;
+  padding: 9px 15px; border-radius: 999px;
+  border: 1.5px solid color-mix(in srgb, var(--c) 55%, var(--border));
+  background: transparent; color: var(--c);
+  font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 13.5px; cursor: pointer;
+  transition: all .15s; white-space: nowrap;
+
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+
+  &:hover { background: color-mix(in srgb, var(--c) 10%, transparent); }
+
+  &.active {
+    background: var(--c); border-color: var(--c); color: var(--brand-ink);
+    .dot { background: var(--brand-ink); }
+  }
+}
