@@ -3,7 +3,9 @@ import { Deporte, DeporteId } from '../models/deporte.model';
 import { Empresa } from '../models/empresa.model';
 import { Cancha } from '../models/cancha.model';
 import { GrupoResultado, ResultadoBusqueda } from '../models/busqueda.model';
+import { CategoriaBanner } from '../models/categoria-banner.model';
 import { CANCHAS, DEPORTES, EMPRESAS, ZONAS } from '../data/canchas.mock';
+import { BANNERS_POR_DEPORTE, BANNER_TODOS } from '../data/categorias.mock';
 import { normalizar } from '../utils/text.util';
 import { ocupacionEjemplo } from '../utils/ocupacion.util';
 
@@ -59,6 +61,35 @@ export class CanchasService {
     if (!propias.length) return 0;
     const total = propias.reduce((acumulado, c) => acumulado + ocupacionEjemplo(c.id), 0);
     return Math.round(total / propias.length);
+  });
+
+  /** Todas las canchas de la categoría (deporte) activa, sin aplicar zona/precio/disponibilidad/texto. */
+  readonly canchasDeCategoria = computed(() => {
+    const sport = this.sportFilter();
+    return sport ? this.canchas().filter(c => c.deporteId === sport) : this.canchas();
+  });
+
+  /** Estadísticas del banner de categoría: se calculan de verdad a partir de los datos, no son fijas. */
+  readonly estadisticasCategoria = computed(() => {
+    const lista = this.canchasDeCategoria();
+    if (!lista.length) {
+      return { totalCanchas: 0, empresasAsociadas: 0, calificacionPromedio: 0, precioPromedio: 0 };
+    }
+    const empresasUnicas = new Set(lista.map(c => c.empresaId));
+    const sumaCalificacion = lista.reduce((acumulado, c) => acumulado + c.calificacion, 0);
+    const sumaPrecio = lista.reduce((acumulado, c) => acumulado + c.precioHora, 0);
+    return {
+      totalCanchas: lista.length,
+      empresasAsociadas: empresasUnicas.size,
+      calificacionPromedio: sumaCalificacion / lista.length,
+      precioPromedio: Math.round(sumaPrecio / lista.length),
+    };
+  });
+
+  /** Contenido del banner de cabecera: cambia según el deporte seleccionado en los chips. */
+  readonly bannerActual = computed<CategoriaBanner>(() => {
+    const sport = this.sportFilter();
+    return sport ? BANNERS_POR_DEPORTE[sport] : BANNER_TODOS;
   });
 
   deporte(id: DeporteId): Deporte {

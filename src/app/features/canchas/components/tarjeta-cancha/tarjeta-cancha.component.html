@@ -1,5 +1,17 @@
 <article class="card">
   <div class="card-media" [style.--c]="deporte.hex">
+    @if (cancha.imagenUrl) {
+      <img
+        class="card-img"
+        [src]="cancha.imagenUrl + '?auto=format&fit=crop&w=600&q=65'"
+        [alt]="deporte.nombre + ' en ' + cancha.nombre"
+        loading="lazy"
+        (error)="imagenConError = true"
+        [class.oculta]="imagenConError" />
+    }
+
+    <div class="card-media-overlay"></div>
+
     @if (modo === 'empresa' && cancha.esPropia) {
       <span class="ribbon">Tuya</span>
     }

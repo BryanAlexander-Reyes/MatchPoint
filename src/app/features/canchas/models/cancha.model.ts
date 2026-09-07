@@ -14,4 +14,6 @@ export interface Cancha {
   disponibleAhora: boolean;
   /** true si la cancha pertenece a la empresa con sesión iniciada (vista Empresa) */
   esPropia?: boolean;
+  /** URL de la foto de la cancha (o del deporte, como respaldo) */
+  imagenUrl?: string;
 }

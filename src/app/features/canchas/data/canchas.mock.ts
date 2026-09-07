@@ -1,6 +1,7 @@
 import { Deporte } from '../models/deporte.model';
 import { Empresa } from '../models/empresa.model';
 import { Cancha } from '../models/cancha.model';
+import { IMAGEN_POR_DEPORTE } from './categorias.mock';
 
 export const DEPORTES: Deporte[] = [
   { id: 'futbol',     nombre: 'Fútbol',      colorVar: 'var(--futbol)',     hex: '#3DDC73' },
@@ -55,4 +56,5 @@ const CANCHAS_BASE: Omit<Cancha, 'esPropia'>[] = [
 export const CANCHAS: Cancha[] = CANCHAS_BASE.map(c => ({
   ...c,
   esPropia: c.empresaId === EMPRESA_ACTUAL_ID,
+  imagenUrl: IMAGEN_POR_DEPORTE[c.deporteId],
 }));

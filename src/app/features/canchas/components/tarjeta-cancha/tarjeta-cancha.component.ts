@@ -17,6 +17,9 @@ export class TarjetaCanchaComponent {
   @Input() modo: 'usuario' | 'empresa' = 'usuario';
   @Input() esFavorita = false;
 
+  /** true si la foto de la cancha no cargó; en ese caso se muestra el degradado de respaldo. */
+  imagenConError = false;
+
   @Output() reservar = new EventEmitter<string>();
   @Output() favorito = new EventEmitter<string>();
   @Output() gestionar = new EventEmitter<string>();

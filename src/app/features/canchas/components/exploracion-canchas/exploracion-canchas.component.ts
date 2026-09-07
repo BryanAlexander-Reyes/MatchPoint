@@ -4,6 +4,7 @@ import { CanchasService } from '../../services/canchas.service';
 import { FiltroDeportesComponent } from '../filtro-deportes/filtro-deportes.component';
 import { BuscadorCanchasComponent } from '../buscador-canchas/buscador-canchas.component';
 import { TarjetaCanchaComponent } from '../tarjeta-cancha/tarjeta-cancha.component';
+import { BannerCategoriaComponent } from '../banner-categoria/banner-categoria.component';
 
 type Rol = 'usuario' | 'empresa';
 
@@ -14,7 +15,7 @@ type Rol = 'usuario' | 'empresa';
 @Component({
   selector: 'app-exploracion-canchas',
   standalone: true,
-  imports: [CommonModule, FiltroDeportesComponent, BuscadorCanchasComponent, TarjetaCanchaComponent],
+  imports: [CommonModule, FiltroDeportesComponent, BuscadorCanchasComponent, TarjetaCanchaComponent, BannerCategoriaComponent],
   templateUrl: './exploracion-canchas.component.html',
   styleUrl: './exploracion-canchas.component.scss',
 })

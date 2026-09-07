@@ -1,0 +1,47 @@
+@let banner = canchasService.bannerActual();
+@let stats = canchasService.estadisticasCategoria();
+
+<section class="banner" [style.--imagen]="'url(' + banner.imagen + '?auto=format&fit=crop&w=1600&q=70)'">
+  <div class="banner-overlay"></div>
+
+  <div class="banner-content">
+    <div class="banner-texto">
+      <h1 class="banner-titulo">
+        <span class="banner-icono" [innerHTML]="iconoDeporte"></span>
+        {{ banner.titulo }}
+      </h1>
+      <p class="banner-descripcion">{{ banner.descripcion }}</p>
+
+      <div class="banner-caracteristicas">
+        @for (item of banner.caracteristicas; track item.titulo) {
+          <div class="caracteristica">
+            <span class="caracteristica-icono" [innerHTML]="iconoCaracteristica(item.icono)"></span>
+            <div>
+              <div class="caracteristica-titulo">{{ item.titulo }}</div>
+              <div class="caracteristica-subtitulo">{{ item.subtitulo }}</div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="banner-stats">
+      <div class="stat-card">
+        <div class="stat-num">{{ stats.totalCanchas }}</div>
+        <div class="stat-lbl">Canchas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">{{ stats.empresasAsociadas }}</div>
+        <div class="stat-lbl">Empresas asociadas</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">{{ stats.calificacionPromedio.toFixed(1) }}</div>
+        <div class="stat-lbl">Calificación promedio</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">${{ stats.precioPromedio | number:'1.0-0':'es-CO' }}</div>
+        <div class="stat-lbl">Precio promedio /hora</div>
+      </div>
+    </div>
+  </div>
+</section>
