@@ -3,13 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthServiceLogin } from '../../../service/servicio-user/authServiceLogin';
+import { CodigoVerificacion } from '../codigo-verificacion/codigo-verificacion';
 
 type PasoRecuperacion = 'correo' | 'codigo' | 'password';
 
 @Component({
   selector: 'app-restablecer',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, CodigoVerificacion],
   templateUrl: './restablecer.html',
   styleUrl: './restablecer.css',
 })
@@ -66,11 +67,24 @@ export class Restablecer {
       this.codigo = '';
       this.errorCodigo = '';
       this.paso = 'codigo';
-      this.infoCodigo = 'Código enviado. Revisa la consola del navegador (modo demo).';
+      this.infoCodigo = '';
     }, 800);
   }
 
-  // PASO 2: verificar el código
+  // Cuando el componente de código verifica correctamente
+  codigoValidado(): void {
+    this.paso = 'password';
+  }
+
+  cambiarCorreoDesdeCodigo(): void {
+    this.cambiarCorreo();
+  }
+
+  reenviarCodigoDesdeCodigo(): void {
+    this.reenviarCodigo();
+  }
+
+  // PASO 2: verificar el código (mantener compatibilidad)
   verificarCodigo(form: any): void {
     if (this.isLoading) return;
 
@@ -106,7 +120,7 @@ export class Restablecer {
     setTimeout(() => {
       this.authService.solicitarRecuperacion(this.correo);
       this.isLoading = false;
-      this.infoCodigo = 'Código reenviado. Revisa la consola del navegador (modo demo).';
+      this.infoCodigo = 'Código reenviado.';
     }, 800);
   }
 

@@ -1,0 +1,87 @@
+<!-- Font Awesome -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+/>
+
+<section class="codigo-card" aria-labelledby="codigo-title">
+  <header class="codigo-header">
+    <div class="codigo-logo">
+      MATCH <span>POINT</span>
+    </div>
+    <h1 id="codigo-title">Código de verificación</h1>
+    <p class="codigo-subtitle">Ingresa el código para continuar</p>
+  </header>
+
+  <form
+    class="codigo-form"
+    (ngSubmit)="verificarCodigo(codigoForm)"
+    #codigoForm="ngForm"
+    novalidate
+    autocomplete="on"
+  >
+    <p class="hint-text">
+      Enviamos un código de 6 dígitos a <strong>{{ correo }}</strong>
+    </p>
+
+    <div class="form-group">
+      <label for="codigo">Código de verificación</label>
+      <div class="input-wrapper">
+        <i class="fa-solid fa-shield-halved input-icon" aria-hidden="true"></i>
+        <input
+          class="code-input"
+          type="text"
+          id="codigo"
+          name="codigo"
+          placeholder="000000"
+          [(ngModel)]="codigo"
+          #codigoCtrl="ngModel"
+          required
+          pattern="^[0-9]{6}$"
+          maxlength="6"
+          inputmode="numeric"
+          autocomplete="one-time-code"
+        />
+      </div>
+      <small
+        class="error-message"
+        *ngIf="codigoCtrl.invalid && (codigoCtrl.dirty || codigoCtrl.touched)"
+      >
+        <span *ngIf="codigoCtrl.errors?.['required']">El código es obligatorio.</span>
+        <span *ngIf="codigoCtrl.errors?.['pattern']">
+          El código debe tener 6 dígitos numéricos.
+        </span>
+      </small>
+      <small class="error-message" *ngIf="errorCodigo">{{ errorCodigo }}</small>
+      <small class="info-message" *ngIf="infoCodigo">{{ infoCodigo }}</small>
+    </div>
+
+    <button
+      type="submit"
+      class="btn-primary"
+      [disabled]="codigoForm.invalid || isLoading"
+    >
+      <span *ngIf="!isLoading">Verificar código</span>
+      <span *ngIf="isLoading">Verificando...</span>
+    </button>
+
+    <div class="actions-row">
+      <button
+        type="button"
+        class="link-button"
+        (click)="onCambiarCorreo()"
+        [disabled]="isLoading"
+      >
+        Cambiar correo
+      </button>
+      <button
+        type="button"
+        class="link-button"
+        (click)="onReenviarCodigo()"
+        [disabled]="isLoading"
+      >
+        {{ isLoading ? 'Reenviando...' : 'Reenviar código' }}
+      </button>
+    </div>
+  </form>
+</section>
