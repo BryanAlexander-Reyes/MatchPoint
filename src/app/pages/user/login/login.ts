@@ -1,44 +1,59 @@
-import { Component, output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import  {Router} from '@angular/router'
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { AuthServiceLogin } from '../../../service/servicio-user/authServiceLogin';
-import { EventEmitter, Output } from '@angular/core';
-import { form } from '@angular/forms/signals';
-
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule],
+  standalone: true,
+  imports: [FormsModule, CommonModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
 export class Login {
-  constructor(private router:Router, private authService:AuthServiceLogin){}
-    @Output() irARegistro = new EventEmitter<void>();
-    @Output() abrirRecuperarComponent = new EventEmitter<void>();
-    abrirRecuperar(){
-        this.abrirRecuperarComponent.emit();
-      };
-  email:string='';
-  password:string='';
+  @Input() embebido = false;
+  @Output() irARegistro = new EventEmitter<void>();
+  @Output() abrirRecuperarComponent = new EventEmitter<void>();
 
-  // contraseña y usuario para prueba
-  login (): void{
+  email: string = '';
+  password: string = '';
+  showPassword = false;
+  isLoading = false;
 
-    const autenticado=this.authService.iniciarSesion(this.email, this.password);
-    if(!autenticado){
-      alert ('Correo o contraseña incorrecta')
+  constructor(private router: Router, private authService: AuthServiceLogin) {}
+
+  abrirRecuperar() {
+    this.abrirRecuperarComponent.emit();
+    if (!this.embebido) {
+      this.router.navigate(['/restablecer']);
+    }
+  }
+
+  login(): void {
+    if (this.isLoading) return;
+    this.isLoading = true;
+
+    const autenticado = this.authService.iniciarSesion(this.email, this.password);
+    if (!autenticado) {
+      this.isLoading = false;
+      alert('Correo o contraseña incorrecta');
       return;
     }
-    const usuario=this.authService.obtenerUsuario();
-    alert (`Bienvenido al sistema ${usuario?.nombre}\nrol: ${usuario?.rol}`)
 
+    const usuario = this.authService.obtenerUsuario();
+    alert(`Bienvenido al sistema ${usuario?.nombre}\nRol: ${usuario?.rol}`);
 
-    this.router.navigate(['/home'])
+    this.isLoading = false;
+    if (!this.embebido) {
+      this.router.navigate(['/home']);
+    }
   }
 
-  goToRegister():void{
-  this.irARegistro.emit();
+  goToRegister(): void {
+    this.irARegistro.emit();
+    if (!this.embebido) {
+      this.router.navigate(['/registro']);
+    }
   }
-
 }

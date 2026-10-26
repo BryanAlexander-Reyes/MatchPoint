@@ -1,120 +1,131 @@
-
 <!-- Font Awesome -->
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 />
 
-<!-- =========================================
-     FORMULARIO LOGIN
-     ========================================= -->
-<div class="login">
+<main class="login-page">
+  <section class="login-card" aria-labelledby="login-title">
+    <!-- HEADER -->
+    <header class="login-header">
+      <div class="login-logo">
+        MATCH <span>POINT</span>
+      </div>
+      <h1 id="login-title">Iniciar sesión</h1>
+      <p class="login-subtitle">Reserva tu cancha en segundos</p>
+    </header>
 
-  <!-- TÍTULO -->
-  <div class="login-section">
-    <h1>Iniciar Sesión</h1>
-  </div>
+    <!-- FORMULARIO -->
+    <form
+      class="login-form"
+      (ngSubmit)="login()"
+      #loginForm="ngForm"
+      novalidate
+      autocomplete="on"
+    >
+      <!-- CORREO -->
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <div class="input-wrapper">
+          <i class="fa-regular fa-envelope input-icon" aria-hidden="true"></i>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="ejemplo@correo.com"
+            [(ngModel)]="email"
+            #emailCtrl="ngModel"
+            required
+            email
+            autocomplete="email"
+            inputmode="email"
+          />
+        </div>
+        <small
+          class="error-message"
+          *ngIf="emailCtrl.invalid && (emailCtrl.dirty || emailCtrl.touched)"
+        >
+          <span *ngIf="emailCtrl.errors?.['required']">El correo es obligatorio.</span>
+          <span *ngIf="emailCtrl.errors?.['email']">Ingresa un correo electrónico válido.</span>
+        </small>
+      </div>
 
+      <!-- CONTRASEÑA -->
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-lock input-icon" aria-hidden="true"></i>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            name="password"
+            placeholder="Ingresa tu contraseña"
+            [(ngModel)]="password"
+            #passCtrl="ngModel"
+            required
+            minlength="6"
+            autocomplete="current-password"
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="showPassword = !showPassword"
+            [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+          >
+            <i
+              [class]="showPassword ? 'fa-regular fa-eye-slash' : 'fa-regular fa-eye'"
+              aria-hidden="true"
+            ></i>
+          </button>
+        </div>
+        <small
+          class="error-message"
+          *ngIf="passCtrl.invalid && (passCtrl.dirty || passCtrl.touched)"
+        >
+          <span *ngIf="passCtrl.errors?.['required']">La contraseña es obligatoria.</span>
+          <span *ngIf="passCtrl.errors?.['minlength']">Debe tener al menos 6 caracteres.</span>
+        </small>
+      </div>
 
-  <!-- =====================================
-       CORREO
-       ===================================== -->
-  <div class="form-group">
+      <!-- RECUPERAR -->
+      <div class="form-row">
+        <button type="button" class="link-button" (click)="abrirRecuperar()">
+          ¿Olvidaste tu contraseña?
+        </button>
+      </div>
 
-    <label for="usuario">
-      Correo Electrónico
-    </label>
+      <!-- BOTÓN INGRESAR -->
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="loginForm.invalid || isLoading"
+      >
+        <span *ngIf="!isLoading">Ingresar</span>
+        <span *ngIf="isLoading">Ingresando...</span>
+      </button>
+    </form>
 
-    <input
-      type="email"
-      id="usuario"
-      placeholder="Ingrese su correo"
-      [(ngModel)]="email"
-    />
+    <!-- DIVIDER -->
+    <div class="divider">
+      <span>o continúa con</span>
+    </div>
 
-  </div>
+    <!-- SOCIAL -->
+    <div class="social-group">
+      <button type="button" class="btn-social" aria-label="Iniciar sesión con Google">
+        <i class="fa-brands fa-google" aria-hidden="true"></i>
+        <span>Google</span>
+      </button>
+      <button type="button" class="btn-social" aria-label="Iniciar sesión con Facebook">
+        <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+        <span>Facebook</span>
+      </button>
+    </div>
 
-
-  <!-- =====================================
-       CONTRASEÑA
-       ===================================== -->
-  <div class="form-group">
-
-    <label for="contraseña">
-      Contraseña
-    </label>
-
-    <input
-      type="password"
-      id="contraseña"
-      placeholder="Ingrese su contraseña"
-      [(ngModel)]="password"
-    />
-
-  </div>
-
-
-  <!-- =====================================
-       RECUPERAR CONTRASEÑA
-       ===================================== -->
-  <div class="recover-password">
-
-    <a (click)="abrirRecuperar()">
-      ¿Olvidaste tu contraseña? 
-    </a>
-    
-
-  </div>
-
-
-  <!-- =====================================
-       BOTÓN INGRESAR
-       ===================================== -->
-  <button
-    type="button"
-    (click)="login()"
-    class="login-button"
-  >
-    Ingresar
-  </button>
-
-
-  <!-- =====================================
-       IR A REGISTRO
-       ===================================== -->
-  <div class="registro">
-
-    <span>
+    <!-- REGISTRO -->
+    <p class="register-text">
       ¿No tienes una cuenta?
-    </span>
-
-    <a
-      (click)="goToRegister()"
-    >
-      Regístrate
-    </a>
-
-  </div>
-
-
-  <!-- =====================================
-       LOGIN CON GOOGLE
-       ===================================== -->
-  <div class="boton">
-
-    <button
-      type="button"
-      class="boton-rapido"
-    >
-      <i class="fa-brands fa-google"></i>
-    </button>
-    <button
-      type="button"
-      class="boton-rapido"
-    >
-      <i class="fa-brands fa-facebook"></i>
-    </button>
-  </div>
-  
-
-</div>
+      <button type="button" class="link-button" (click)="goToRegister()">Regístrate</button>
+    </p>
+  </section>
+  </main>

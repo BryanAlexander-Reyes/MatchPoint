@@ -1,1 +1,40 @@
-/* You can add global styles to this file, and also import other style files */
+/* ============================================================
+   MATCH POINT - ESTILOS GLOBALES
+   La paleta vive aquí para que login, registro, restablecer
+   y animacion compartan exactamente los mismos colores.
+   ============================================================ */
+:root {
+  --mp-bg: #0f120f;
+  --mp-card: #151a16;
+  --mp-surface: #1d221d;
+  --mp-border: #2a332a;
+  --mp-green: #22c55e;
+  --mp-green-hover: #16a34a;
+  --mp-green-press: #15803d;
+  --mp-text-primary: #f8fafc;
+  --mp-text-secondary: #cbd5e1;
+  --mp-text-tertiary: #94a3b8;
+  --mp-error: #ef4444;
+  --mp-focus: rgba(34, 197, 94, 0.4);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color-scheme: dark;
+  background-color: var(--mp-bg);
+  color: var(--mp-text-primary);
+  font-family: 'Roboto', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

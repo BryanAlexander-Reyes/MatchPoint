@@ -1,0 +1,176 @@
+/* ============================================================
+   ANIMACION
+   Contenedor único de login, registro y restablecer.
+   La paleta está definida en src/styles.css
+   ============================================================ */
+
+:host {
+  display: block;
+}
+
+.animacion-page {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 3vw, 2.5rem);
+  background:
+    radial-gradient(circle at 18% 12%, rgba(34, 197, 94, 0.1) 0%, transparent 42%),
+    radial-gradient(circle at top, #090909 0%, var(--mp-bg) 60%);
+}
+
+.animacion-shell {
+  width: 100%;
+  max-width: 1120px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 560px);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+/* ---------- ESCENARIO DE LA ANIMACION ---------- */
+.animation-stage {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 3vw, 2rem);
+  min-width: 0;
+}
+
+.stage-eyebrow {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  background-color: rgba(34, 197, 94, 0.06);
+  color: var(--mp-green);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.stage-eyebrow::before {
+  content: '';
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background-color: var(--mp-green);
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.16);
+}
+
+.stage-copy h1 {
+  margin: 1rem 0 0.75rem;
+  font-size: clamp(2rem, 4.2vw, 3.15rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--mp-text-primary);
+}
+
+.stage-copy h1 span {
+  color: var(--mp-green);
+}
+
+.stage-copy p {
+  margin: 0;
+  max-width: 42ch;
+  color: var(--mp-text-tertiary);
+  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+  line-height: 1.6;
+}
+
+/* ===== ESPACIO PARA TU ANIMACION =====
+   Deja aquí tu SVG, Lottie, canvas o animación CSS.
+   El contenedor ya está centrado y se adapta a móvil. */
+.animation-slot {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: clamp(240px, 38vh, 400px);
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.animation-slot::before {
+  content: '';
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, transparent 68%);
+  filter: blur(12px);
+  pointer-events: none;
+}
+
+/* ---------- PANEL DE AUTENTICACION ---------- */
+.auth-panel {
+  min-width: 0;
+}
+
+.auth-panel app-login,
+.auth-panel app-register,
+.auth-panel app-restablecer {
+  display: block;
+}
+
+/* Las páginas internas ya traen fondo y altura completa:
+   aquí las adaptamos para que vivan dentro del contenedor. */
+.auth-panel ::ng-deep .login-page,
+.auth-panel ::ng-deep .register-page,
+.auth-panel ::ng-deep .restablecer-page {
+  min-height: 0;
+  padding: 0;
+  background: none;
+  display: block;
+}
+
+.auth-panel ::ng-deep .login-card,
+.auth-panel ::ng-deep .register-card,
+.auth-panel ::ng-deep .restablecer-card {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 980px) {
+  .animacion-page {
+    align-items: flex-start;
+  }
+
+  .animacion-shell {
+    grid-template-columns: 1fr;
+    max-width: 620px;
+    gap: 1.75rem;
+  }
+
+  .stage-copy {
+    text-align: center;
+  }
+
+  .stage-eyebrow {
+    align-self: center;
+  }
+
+  .stage-copy p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .animation-slot {
+    min-height: 200px;
+  }
+}
+
+@media (max-width: 560px) {
+  .animacion-page {
+    padding: 1rem;
+  }
+
+  .stage-copy h1 {
+    font-size: clamp(1.6rem, 8vw, 2.15rem);
+  }
+}
