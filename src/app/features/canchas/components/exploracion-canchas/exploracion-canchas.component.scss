@@ -1,54 +1,19 @@
+/* Los colores (--bg, --brand, --futbol, ...) son globales: están en src/styles.scss. */
 :host {
-  --bg: #0A0D0B;
-  --bg-soft: #0E1210;
-  --surface: #131914;
-  --surface-2: #182019;
-  --border: #212B22;
-  --border-soft: #1A231C;
-  --text: #EAF2EC;
-  --text-dim: #93A69A;
-  --text-faint: #5E6E64;
-  --brand: #C6FF3D;
-  --brand-ink: #0E1409;
-  --futbol: #3DDC73;
-  --voley: #F2A93B;
-  --baloncesto: #FF6A3D;
-  --tenis: #4C86FF;
-  --padel: #C084F5;
-  --danger: #FF6A6A;
-
   display: block;
   font-family: 'Manrope', system-ui, sans-serif;
   color: var(--text);
-  background: var(--bg);
 }
 
-.app { max-width: 1180px; margin: 0 auto; padding: 28px 24px 80px; }
+.app { max-width: 1180px; margin: 0 auto; padding: 28px 24px 96px; }
 
-.topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; flex-wrap: wrap; }
-.brand { display: flex; align-items: center; gap: 10px; }
-.brand-mark {
-  width: 36px; height: 36px; border-radius: 10px;
-  background: linear-gradient(155deg, var(--brand), #7FCB1F);
-  display: flex; align-items: center; justify-content: center;
-  font-family: 'Outfit', sans-serif; font-weight: 800; color: var(--brand-ink); font-size: 17px;
+.saludo {
+  margin-bottom: 18px;
+
+  h1 { font-family: 'Outfit', sans-serif; font-size: 26px; font-weight: 800; margin: 0 0 4px; letter-spacing: -0.01em; }
+  p { margin: 0; color: var(--text-dim); font-size: 14px; }
+  b { color: var(--text); }
 }
-.brand-name { font-size: 19px; font-weight: 700; font-family: 'Outfit', sans-serif; }
-.brand-tag { font-size: 12px; color: var(--text-dim); font-weight: 500; }
-
-.role-toggle { display: flex; background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 4px; gap: 2px; }
-.role-toggle button {
-  appearance: none; border: none; background: transparent; color: var(--text-dim);
-  font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 13px; padding: 8px 16px;
-  border-radius: 999px; cursor: pointer; transition: background .18s, color .18s;
-}
-.role-toggle button.active { background: var(--brand); color: var(--brand-ink); }
-.role-toggle button:not(.active):hover { color: var(--text); }
-
-.stats-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 22px; }
-.stat-tile { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
-.stat-tile .num { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 22px; font-variant-numeric: tabular-nums; }
-.stat-tile .lbl { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
 
 .filters-bar { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 14px 4px 18px; border-bottom: 1px solid var(--border-soft); margin-bottom: 20px; }
 .filter-field { display: flex; align-items: center; gap: 8px; }
@@ -76,8 +41,8 @@
 .results-count b { color: var(--text); }
 
 .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-@media (max-width: 920px) { .grid { grid-template-columns: repeat(2, 1fr); } .stats-strip { grid-template-columns: 1fr; } }
-@media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+@media (max-width: 1100px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .grid { grid-template-columns: 1fr; } .app { padding: 18px 16px 110px; } }
 
 .empty-state { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-dim); }
 .empty-state h3 { color: var(--text); margin: 0 0 6px; }

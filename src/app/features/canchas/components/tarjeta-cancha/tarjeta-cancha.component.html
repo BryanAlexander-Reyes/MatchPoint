@@ -12,7 +12,7 @@
 
     <div class="card-media-overlay"></div>
 
-    @if (modo === 'empresa' && cancha.esPropia) {
+    @if (modo === 'empresa' && esPropia) {
       <span class="ribbon">Tuya</span>
     }
     @if (modo === 'usuario') {
@@ -39,7 +39,7 @@
       }
     </div>
 
-    @if (modo === 'empresa' && cancha.esPropia) {
+    @if (modo === 'empresa' && esPropia) {
       <div class="occ-lbl"><span>Ocupación semana</span><span>{{ ocupacionSemana }}%</span></div>
       <div class="occ-bar"><i [style.width.%]="ocupacionSemana"></i></div>
     }
@@ -53,7 +53,9 @@
       @if (modo === 'usuario') {
         <button class="btn btn-primary" (click)="reservar.emit(cancha.id)">Reservar</button>
         <button class="btn btn-ghost" type="button">Detalles</button>
-      } @else if (cancha.esPropia) {
+      } @else if (modo === 'admin') {
+        <button class="btn btn-ghost" type="button">Ver ficha</button>
+      } @else if (esPropia) {
         <button class="btn btn-primary" (click)="gestionar.emit(cancha.id)">Gestionar</button>
         <button class="btn btn-ghost" type="button">Ver ficha</button>
       } @else {

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Rol } from '../../../../core/sesion/sesion.model';
 import { Cancha } from '../../models/cancha.model';
 import { CanchasService } from '../../services/canchas.service';
 import { ocupacionEjemplo } from '../../utils/ocupacion.util';
@@ -14,7 +15,7 @@ import { ocupacionEjemplo } from '../../utils/ocupacion.util';
 })
 export class TarjetaCanchaComponent {
   @Input({ required: true }) cancha!: Cancha;
-  @Input() modo: 'usuario' | 'empresa' = 'usuario';
+  @Input() modo: Rol = 'usuario';
   @Input() esFavorita = false;
 
   /** true si la foto de la cancha no cargó; en ese caso se muestra el degradado de respaldo. */
@@ -28,6 +29,10 @@ export class TarjetaCanchaComponent {
 
   get deporte() {
     return this.canchasService.deporte(this.cancha.deporteId);
+  }
+
+  get esPropia(): boolean {
+    return this.canchasService.esPropia(this.cancha);
   }
 
   get nombreEmpresa(): string {

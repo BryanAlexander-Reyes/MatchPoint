@@ -5,9 +5,9 @@ import { IMAGEN_POR_DEPORTE } from './categorias.mock';
 
 export const DEPORTES: Deporte[] = [
   { id: 'futbol',     nombre: 'Fútbol',      colorVar: 'var(--futbol)',     hex: '#3DDC73' },
-  { id: 'voley',      nombre: 'Vóley Playa', colorVar: 'var(--voley)',      hex: '#F2A93B' },
-  { id: 'baloncesto', nombre: 'Baloncesto',  colorVar: 'var(--baloncesto)', hex: '#FF6A3D' },
-  { id: 'tenis',      nombre: 'Tenis',       colorVar: 'var(--tenis)',      hex: '#4C86FF' },
+  { id: 'voley',      nombre: 'Vóley Playa', colorVar: 'var(--voley)',      hex: '#FFD23F' },
+  { id: 'baloncesto', nombre: 'Baloncesto',  colorVar: 'var(--baloncesto)', hex: '#FF8A1F' },
+  { id: 'tenis',      nombre: 'Tenis',       colorVar: 'var(--tenis)',      hex: '#4C9BFF' },
   { id: 'padel',      nombre: 'Pádel',       colorVar: 'var(--padel)',      hex: '#C084F5' },
 ];
 
@@ -25,10 +25,7 @@ export const EMPRESAS: Record<string, Empresa> = {
   'elite-sports':  { id: 'elite-sports',  nombre: 'Elite Sports',       zona: 'Bicentenario' },
 };
 
-/** ID de la empresa con sesión iniciada, para marcar "esPropia" en la vista Empresa (dato de demo). */
-export const EMPRESA_ACTUAL_ID = 'arena-sport';
-
-const CANCHAS_BASE: Omit<Cancha, 'esPropia'>[] = [
+const CANCHAS_BASE: Cancha[] = [
   { id: 'c1',  nombre: 'Arena Soccer City',    deporteId: 'futbol',     empresaId: 'arena-sport',   zona: 'Centro',        distanciaKm: 1.2, precioHora: 60000, calificacion: 4.8, numResenas: 120, tags: ['LED', 'Parqueadero', 'Duchas'],         disponibleAhora: true  },
   { id: 'c2',  nombre: 'FutCenter Pro',        deporteId: 'futbol',     empresaId: 'futbol-center', zona: 'La Campiña',    distanciaKm: 2.4, precioHora: 58000, calificacion: 4.7, numResenas: 153, tags: ['Cafetería', 'Duchas'],                  disponibleAhora: true  },
   { id: 'c3',  nombre: 'Green Field Club',     deporteId: 'futbol',     empresaId: 'green-fields',  zona: 'Bicentenario',  distanciaKm: 3.1, precioHora: 55000, calificacion: 4.8, numResenas: 128, tags: ['Parqueadero', 'LED'],                   disponibleAhora: false },
@@ -55,6 +52,5 @@ const CANCHAS_BASE: Omit<Cancha, 'esPropia'>[] = [
 
 export const CANCHAS: Cancha[] = CANCHAS_BASE.map(c => ({
   ...c,
-  esPropia: c.empresaId === EMPRESA_ACTUAL_ID,
   imagenUrl: IMAGEN_POR_DEPORTE[c.deporteId],
 }));

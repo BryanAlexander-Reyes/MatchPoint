@@ -1,0 +1,80 @@
+.fondo { position: fixed; inset: 0; z-index: 40; background: rgba(4, 6, 5, 0.75); }
+
+.hoja {
+  position: fixed; z-index: 41; top: 0; right: 0; bottom: 0; width: min(460px, 100vw);
+  display: flex; flex-direction: column; background: var(--bg-soft); border-left: 1px solid var(--border);
+  animation: aparecer 0.22s ease-out;
+}
+
+.cabecera {
+  position: relative; min-height: 150px; display: flex; align-items: flex-end; padding: 16px 18px;
+  background: color-mix(in srgb, var(--brand) 25%, var(--surface)) center / cover no-repeat;
+}
+.cabecera-velo { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(6, 8, 7, 0.2), rgba(6, 8, 7, 0.9)); }
+.cabecera-texto { position: relative; }
+.cabecera h2 { font-family: 'Outfit', sans-serif; font-size: 22px; margin: 4px 0 2px; }
+.cabecera p { margin: 0; font-size: 13px; color: var(--text-dim); }
+.deporte { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 800; color: var(--brand); text-transform: uppercase; }
+
+.cerrar {
+  position: absolute; top: 12px; right: 12px; z-index: 1; width: 36px; height: 36px; border-radius: 50%;
+  display: grid; place-items: center; cursor: pointer; color: #fff; background: rgba(10, 13, 11, 0.6); border: none;
+}
+
+.pasos { flex: 1; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 22px; }
+
+h3 { display: flex; align-items: center; gap: 8px; font-size: 15px; margin: 0 0 10px; }
+.num {
+  width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--brand); color: var(--brand-ink); font-size: 12px; font-weight: 800;
+}
+.libres { margin-left: auto; font-size: 12px; color: var(--text-dim); font-weight: 600; }
+.sin-horas { margin: 0 0 10px; font-size: 13px; color: var(--warning); }
+
+.dia, .hora, .metodo { border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text); cursor: pointer; }
+
+.dias { display: flex; gap: 6px; overflow-x: auto; }
+.dia { flex: none; min-width: 58px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 9px 6px; }
+.dia-nombre { font-size: 11.5px; color: var(--text-dim); font-weight: 700; }
+.dia-num { font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 700; }
+
+.franja + .franja { margin-top: 10px; }
+.franja-nombre { display: block; font-size: 11.5px; color: var(--text-faint); font-weight: 700; margin-bottom: 6px; }
+.horas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.hora { padding: 10px 4px; font-size: 13px; font-weight: 700; &:not(:disabled):hover { border-color: var(--brand); } }
+.hora.no-disponible { color: var(--text-faint); text-decoration: line-through; background: transparent; border-style: dashed; cursor: not-allowed; }
+
+.metodos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+.metodo { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; padding: 10px 12px; text-align: left; }
+.metodo-nombre { font-weight: 800; font-size: 13.5px; }
+.metodo-desc { font-size: 11.5px; color: var(--text-dim); }
+
+.dia.activo, .hora.activo, .metodo.activo {
+  border-color: var(--brand); background: var(--brand); color: var(--brand-ink);
+  .dia-nombre, .metodo-desc { color: color-mix(in srgb, var(--brand-ink) 75%, transparent); }
+}
+
+.pie { padding: 14px 18px 18px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; }
+.resumen { display: flex; justify-content: space-between; gap: 10px; font-size: 13.5px; color: var(--text-dim); }
+.resumen b { color: var(--text); font-family: 'Outfit', sans-serif; font-size: 17px; }
+
+.listo {
+  flex: 1; overflow-y: auto; padding: 28px 22px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px;
+  h3 { font-family: 'Outfit', sans-serif; font-size: 24px; margin: 6px 0 0; }
+  p { margin: 0 0 6px; color: var(--text-dim); line-height: 1.6; }
+  b { color: var(--text); }
+}
+.listo-icono {
+  width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--brand); color: var(--brand-ink);
+  app-icono { width: 32px; height: 32px; }
+}
+
+@keyframes aparecer { from { transform: translateY(24px); opacity: 0; } }
+
+@media (max-width: 640px) {
+  .hoja {
+    top: auto; width: 100vw; max-height: 92vh; border-left: none; border-top: 1px solid var(--border);
+    border-radius: 20px 20px 0 0; overflow: hidden;
+  }
+  .cabecera { min-height: 120px; }
+}

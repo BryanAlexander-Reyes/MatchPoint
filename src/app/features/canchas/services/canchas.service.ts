@@ -1,4 +1,6 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
+import { SesionService } from '../../../core/sesion/sesion.service';
+import { PlataformaService } from '../../../core/plataforma/plataforma.service';
 import { Deporte, DeporteId } from '../models/deporte.model';
 import { Empresa } from '../models/empresa.model';
 import { Cancha } from '../models/cancha.model';
@@ -19,10 +21,18 @@ const COLOR_NEUTRO = '#8CA099';
  */
 @Injectable({ providedIn: 'root' })
 export class CanchasService {
+  private readonly sesion = inject(SesionService);
+  private readonly plataforma = inject(PlataformaService);
+
   readonly deportes = signal<Deporte[]>(DEPORTES);
   readonly empresas = signal<Record<string, Empresa>>(EMPRESAS);
   readonly zonas = signal<string[]>(ZONAS);
-  private readonly canchas = signal<Cancha[]>(CANCHAS);
+  private readonly todasLasCanchas = signal<Cancha[]>(CANCHAS);
+
+  /** Lo que ven los jugadores: se ocultan las canchas de empresas suspendidas por el administrador. */
+  private readonly canchas = computed(() =>
+    this.todasLasCanchas().filter(c => !this.plataforma.estaSuspendida(c.empresaId)),
+  );
 
   // ---- filtros activos ----
   readonly sportFilter = signal<DeporteId | null>(null);
@@ -54,7 +64,11 @@ export class CanchasService {
     });
   });
 
-  readonly canchasPropias = computed(() => this.canchas().filter(c => c.esPropia));
+  /** Canchas de la empresa con sesión iniciada (vacío si el rol no es empresa). */
+  readonly canchasPropias = computed(() => {
+    const empresaId = this.sesion.empresaId();
+    return empresaId ? this.canchasDeEmpresa(empresaId) : [];
+  });
 
   readonly ocupacionPromedioPropias = computed(() => {
     const propias = this.canchasPropias();
@@ -98,6 +112,24 @@ export class CanchasService {
 
   empresaNombre(id: string): string {
     return this.empresas()[id]?.nombre ?? '';
+  }
+
+  cancha(id: string): Cancha | undefined {
+    return this.todasLasCanchas().find(c => c.id === id);
+  }
+
+  /** Incluye las canchas aunque la empresa esté suspendida: la empresa siempre ve las suyas. */
+  canchasDeEmpresa(empresaId: string): Cancha[] {
+    return this.todasLasCanchas().filter(c => c.empresaId === empresaId);
+  }
+
+  esPropia(cancha: Cancha): boolean {
+    return cancha.empresaId === this.sesion.empresaId();
+  }
+
+  /** La empresa abre o cierra su cancha; los jugadores lo ven al instante como "Disponible" u "Ocupada". */
+  setDisponible(id: string, disponible: boolean): void {
+    this.todasLasCanchas.update(lista => lista.map(c => (c.id === id ? { ...c, disponibleAhora: disponible } : c)));
   }
 
   setSportFilter(id: DeporteId | null): void { this.sportFilter.set(id); }

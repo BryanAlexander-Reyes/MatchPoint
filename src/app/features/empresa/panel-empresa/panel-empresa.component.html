@@ -1,0 +1,172 @@
+<div class="page">
+  <div class="page-head">
+    <div>
+      <h1>Hola, {{ primerNombre() }} <span class="acento">· {{ nombreEmpresa() }}</span></h1>
+      <p>{{ fechaLarga(fecha()) }} · {{ canchas().length }} canchas</p>
+    </div>
+  </div>
+
+  @if (estadoSuscripcion() !== 'al-dia') {
+    <div class="aviso" [class.grave]="estadoSuscripcion() !== 'por-vencer'">
+      <app-icono nombre="alerta" />
+      <div class="aviso-texto">
+        @switch (estadoSuscripcion()) {
+          @case ('por-vencer') { <b>Tu mensualidad vence en {{ diasParaCobro() }} días.</b> Págala para seguir recibiendo reservas. }
+          @case ('vencida') { <b>Tu mensualidad está vencida.</b> Págala para que tus canchas sigan publicadas. }
+          @case ('suspendida') { <b>Tu cuenta está suspendida.</b> Tus canchas no se muestran a los jugadores. }
+        }
+      </div>
+      <button type="button" class="boton boton-primario" (click)="pagarMensualidad()">
+        Pagar {{ plataforma.valorMensualidad() | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}
+      </button>
+    </div>
+  }
+
+  <div class="kpis">
+    <div class="kpi">
+      <div class="lbl">Reservas {{ etiquetaDia(fecha()).toLowerCase() }}</div>
+      <div class="num">{{ reservasDelDia().length }}</div>
+      <div class="sub">{{ pendientes() }} por confirmar</div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">Ingresos del día</div>
+      <div class="num">{{ ingresosDelDia() | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</div>
+      <div class="sub">Confirmadas y pendientes</div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">Ocupación</div>
+      <div class="num">{{ ocupacion() }}%</div>
+      <div class="barra"><i [style.width.%]="ocupacion()"></i></div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">Próxima reserva</div>
+      @if (proxima(); as p) {
+        <div class="num">{{ horaTexto(p.hora) }}</div>
+        <div class="sub">{{ nombreCancha(p) }} · {{ p.cliente }}</div>
+      } @else {
+        <div class="num">—</div>
+        <div class="sub">No hay más reservas este día</div>
+      }
+    </div>
+  </div>
+
+  <section class="panel">
+    <h2>
+      Agenda
+      <div class="dias">
+        @for (dia of dias; track dia) {
+          <button type="button" [class.activo]="fecha() === dia" (click)="fecha.set(dia)">
+            {{ etiquetaDia(dia) }} {{ diaDelMes(dia) }}
+          </button>
+        }
+      </div>
+    </h2>
+
+    <div class="agenda-scroll">
+      <div class="agenda" [style.grid-template-columns]="'150px repeat(' + horas.length + ', minmax(34px, 1fr))'">
+        <span></span>
+        @for (hora of horas; track hora) {
+          <span class="agenda-hora">{{ horaCorta(hora) }}</span>
+        }
+
+        @for (fila of agenda(); track fila.cancha.id) {
+          <span class="agenda-cancha">
+            <span class="punto-deporte" [style.background]="fila.color"></span>{{ fila.cancha.nombre }}
+          </span>
+          @for (hora of horas; track hora) {
+            @let reserva = fila.porHora.get(hora);
+            <span
+              class="celda"
+              [class.reservada]="!!reserva"
+              [class.pendiente]="reserva?.estado === 'pendiente'"
+              [class.pasada]="horaPasada(hora)"
+              [style.--c]="fila.color"
+              [attr.title]="reserva ? horaTexto(hora) + ' · ' + reserva.cliente + ' · ' + textoEstadoReserva[reserva.estado] : horaTexto(hora) + ' · libre'">
+            </span>
+          }
+        }
+      </div>
+    </div>
+
+    <div class="leyenda">
+      <span><i class="celda"></i> Libre</span>
+      <span><i class="celda reservada"></i> Reservada</span>
+      <span><i class="celda reservada pendiente"></i> Paga al llegar</span>
+    </div>
+  </section>
+
+  <div class="columnas">
+    <section class="panel">
+      <h2>Reservas {{ etiquetaDia(fecha()).toLowerCase() }}</h2>
+      @if (reservasDelDia().length) {
+        <div class="tabla-scroll">
+          <table class="tabla">
+            <thead><tr><th>Hora</th><th>Cancha</th><th>Cliente</th><th>Pago</th><th></th></tr></thead>
+            <tbody>
+              @for (r of reservasDelDia(); track r.id) {
+                <tr>
+                  <td><b>{{ horaTexto(r.hora) }}</b></td>
+                  <td>{{ nombreCancha(r) }}</td>
+                  <td>{{ r.cliente }}</td>
+                  <td>{{ nombreMetodo(r.metodoPago) }}</td>
+                  <td class="num">
+                    @if (r.estado === 'pendiente') {
+                      <button type="button" class="boton boton-primario boton-chico" (click)="reservasService.confirmar(r.id)">Ya pagó</button>
+                    } @else {
+                      <span class="estado ok">{{ textoEstadoReserva[r.estado] }}</span>
+                    }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <div class="vacio"><p>No hay reservas este día.</p></div>
+      }
+    </section>
+
+    <div class="lado">
+      <section class="panel">
+        <h2>Mis canchas</h2>
+        @for (cancha of canchas(); track cancha.id) {
+          <div class="mi-cancha">
+            <span class="punto-deporte" [style.background]="canchasService.deporte(cancha.deporteId).hex"></span>
+            <span class="mi-cancha-texto">
+              <b>{{ cancha.nombre }}</b>
+              <small>{{ cancha.precioHora | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}/hora</small>
+            </span>
+            <button type="button" class="interruptor" [class.on]="cancha.disponibleAhora" (click)="toggleDisponible(cancha)"
+              [attr.aria-label]="(cancha.disponibleAhora ? 'Cerrar ' : 'Abrir ') + cancha.nombre">
+              {{ cancha.disponibleAhora ? 'Abierta' : 'Cerrada' }}
+            </button>
+          </div>
+        }
+      </section>
+
+      <section class="panel plan">
+        <h2>
+          Plan Empresa
+          <span class="estado" [class.ok]="estadoSuscripcion() === 'al-dia'" [class.aviso]="estadoSuscripcion() === 'por-vencer'"
+            [class.mal]="estadoSuscripcion() === 'vencida' || estadoSuscripcion() === 'suspendida'">
+            {{ textoEstadoSuscripcion[estadoSuscripcion()] }}
+          </span>
+        </h2>
+        <div class="precio">{{ plataforma.valorMensualidad() | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}<small>/mes</small></div>
+        @if (suscripcion(); as s) {
+          <p class="cobro">Próximo cobro: <b>{{ fechaCorta(s.proximoCobro) }}</b></p>
+        }
+        <ul>
+          @for (ventaja of ventajas; track ventaja) {
+            <li><app-icono nombre="check" />{{ ventaja }}</li>
+          }
+        </ul>
+        @if (pagoRegistrado()) {
+          <p class="gracias">¡Pago registrado! Quedas al día por 30 días.</p>
+        } @else if (estadoSuscripcion() !== 'al-dia') {
+          <button type="button" class="boton boton-primario boton-grande" (click)="pagarMensualidad()">Pagar mensualidad</button>
+        }
+      </section>
+    </div>
+  </div>
+</div>

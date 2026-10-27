@@ -1,0 +1,68 @@
+<div class="page">
+  <div class="page-head">
+    <div>
+      <h1>Mis reservas</h1>
+      <p>Aquí ves tus partidos. Llega 10 minutos antes.</p>
+    </div>
+    <a class="boton boton-primario" routerLink="/canchas"><app-icono nombre="mas" /> Reservar otra cancha</a>
+  </div>
+
+  <h2 class="seccion">Próximas</h2>
+
+  @if (reservasService.misProximas().length) {
+    <div class="proximas">
+      @for (reserva of reservasService.misProximas(); track reserva.id) {
+        <article class="reserva" [style.--c]="colorDeporte(reserva)">
+          <div class="cuando">
+            <span class="cuando-dia">{{ etiquetaDia(reserva.fecha) }}</span>
+            <span class="cuando-hora">{{ horaTexto(reserva.hora) }}</span>
+            <span class="cuando-fecha">{{ fechaLarga(reserva.fecha) }}</span>
+          </div>
+
+          <div class="detalle">
+            <h3>{{ cancha(reserva)?.nombre }}</h3>
+            <p>{{ nombreEmpresa(reserva) }} · {{ cancha(reserva)?.zona }}</p>
+            <p class="pago">
+              {{ nombreMetodo(reserva.metodoPago) }} · {{ reserva.precio | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}
+            </p>
+            <span class="estado" [class.ok]="reserva.estado === 'confirmada'" [class.aviso]="reserva.estado === 'pendiente'">
+              {{ reserva.estado === 'pendiente' ? 'Pagas al llegar' : textoEstado[reserva.estado] }}
+            </span>
+          </div>
+
+          <div class="acciones">
+            @if (porCancelar() === reserva.id) {
+              <span class="pregunta">¿Seguro?</span>
+              <button type="button" class="boton boton-peligro boton-chico" (click)="cancelar(reserva.id)">Sí, cancelar</button>
+              <button type="button" class="boton boton-secundario boton-chico" (click)="porCancelar.set(null)">No</button>
+            } @else {
+              <button type="button" class="boton boton-secundario boton-chico" (click)="porCancelar.set(reserva.id)">Cancelar</button>
+            }
+          </div>
+        </article>
+      }
+    </div>
+  } @else {
+    <div class="panel vacio">
+      <h3>No tienes partidos pendientes</h3>
+      <p>Busca una cancha y resérvala en 3 clics.</p>
+      <a class="boton boton-primario" routerLink="/canchas">Buscar canchas</a>
+    </div>
+  }
+
+  @if (reservasService.miHistorial().length) {
+    <h2 class="seccion">Historial</h2>
+    <div class="panel historial">
+      @for (reserva of reservasService.miHistorial(); track reserva.id) {
+        <div class="fila">
+          <span class="punto-deporte" [style.background]="colorDeporte(reserva)"></span>
+          <span class="fila-cancha">{{ cancha(reserva)?.nombre }}</span>
+          <span class="fila-fecha">{{ fechaCorta(reserva.fecha) }} · {{ horaTexto(reserva.hora) }}</span>
+          <span class="estado" [class.mal]="reserva.estado === 'cancelada'" [class.neutro]="reserva.estado !== 'cancelada'">
+            {{ reserva.estado === 'cancelada' ? 'Cancelada' : 'Jugada' }}
+          </span>
+        </div>
+      }
+    </div>
+  }
+</div>

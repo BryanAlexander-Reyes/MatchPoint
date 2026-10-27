@@ -1,0 +1,102 @@
+<div class="fondo" (click)="cerrar.emit()"></div>
+
+<aside class="hoja" role="dialog" aria-modal="true" [attr.aria-label]="'Reservar ' + cancha.nombre" [style.--brand]="deporte.hex">
+  <header class="cabecera" [style.background-image]="cancha.imagenUrl ? 'url(' + cancha.imagenUrl + '?auto=format&fit=crop&w=800&q=60)' : null">
+    <div class="cabecera-velo"></div>
+    <button type="button" class="cerrar" (click)="cerrar.emit()" aria-label="Cerrar">
+      <app-icono nombre="cerrar" />
+    </button>
+    <div class="cabecera-texto">
+      <span class="deporte"><span class="punto-deporte" [style.background]="deporte.hex"></span>{{ deporte.nombre }}</span>
+      <h2>{{ cancha.nombre }}</h2>
+      <p>{{ nombreEmpresa }} · {{ cancha.zona }} · {{ cancha.precioHora | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}/hora</p>
+    </div>
+  </header>
+
+  @if (reservaHecha(); as reserva) {
+    <div class="listo">
+      <span class="listo-icono"><app-icono nombre="check" /></span>
+      <h3>¡Listo, reservaste!</h3>
+      <p>
+        <b>{{ etiquetaDia(reserva.fecha) }}</b>, {{ fechaLarga(reserva.fecha) }}<br />
+        a las <b>{{ horaTexto(reserva.hora) }}</b> · 1 hora
+      </p>
+      <p>
+        Pago: {{ nombreMetodo(reserva.metodoPago) }} ·
+        {{ reserva.precio | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}
+        @if (reserva.estado === 'pendiente') { <br />Paga al llegar a la cancha. }
+      </p>
+      <a class="boton boton-primario boton-grande" routerLink="/reservas">Ver mis reservas</a>
+      <button type="button" class="boton boton-secundario boton-grande" (click)="cerrar.emit()">Seguir buscando</button>
+    </div>
+  } @else {
+    <div class="pasos">
+      <section>
+        <h3><span class="num">1</span> ¿Qué día?</h3>
+        <div class="dias">
+          @for (dia of dias; track dia) {
+            <button type="button" class="dia" [class.activo]="fecha() === dia" (click)="elegirDia(dia)">
+              <span class="dia-nombre">{{ etiquetaDia(dia) }}</span>
+              <span class="dia-num">{{ diaDelMes(dia) }}</span>
+            </button>
+          }
+        </div>
+      </section>
+
+      <section>
+        <h3>
+          <span class="num">2</span> ¿A qué hora?
+          <span class="libres">{{ horasLibres() }} {{ horasLibres() === 1 ? 'libre' : 'libres' }}</span>
+        </h3>
+        @if (horasLibres() === 0) {
+          <p class="sin-horas">Este día ya no quedan horas. Prueba con otro día.</p>
+        }
+        @for (franja of franjas(); track franja.nombre) {
+          <div class="franja">
+            <span class="franja-nombre">{{ franja.nombre }}</span>
+            <div class="horas">
+              @for (h of franja.horas; track h.hora) {
+                <button
+                  type="button"
+                  class="hora"
+                  [class.activo]="hora() === h.hora"
+                  [class.no-disponible]="h.estado !== 'libre'"
+                  [disabled]="h.estado !== 'libre'"
+                  [attr.title]="h.estado === 'ocupada' ? 'Ya reservada' : h.estado === 'pasada' ? 'Esta hora ya pasó' : null"
+                  (click)="hora.set(h.hora)">
+                  {{ horaTexto(h.hora) }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+      </section>
+
+      <section>
+        <h3><span class="num">3</span> ¿Cómo pagas?</h3>
+        <div class="metodos">
+          @for (m of plataforma.metodosActivos(); track m.id) {
+            <button type="button" class="metodo" [class.activo]="metodo() === m.id" (click)="elegirMetodo(m.id)">
+              <span class="metodo-nombre">{{ m.nombre }}</span>
+              <span class="metodo-desc">{{ m.descripcion }}</span>
+            </button>
+          }
+        </div>
+      </section>
+    </div>
+
+    <footer class="pie">
+      <div class="resumen">
+        @if (hora() !== null) {
+          <span>{{ etiquetaDia(fecha()) }} · {{ horaTexto(hora()!) }} · 1 hora</span>
+        } @else {
+          <span>Elige una hora para continuar</span>
+        }
+        <b>{{ cancha.precioHora | currency: 'COP' : 'symbol-narrow' : '1.0-0' }}</b>
+      </div>
+      <button type="button" class="boton boton-primario boton-grande" [disabled]="hora() === null || !metodo()" (click)="confirmar()">
+        Confirmar reserva
+      </button>
+    </footer>
+  }
+</aside>
