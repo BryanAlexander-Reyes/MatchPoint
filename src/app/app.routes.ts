@@ -4,6 +4,7 @@ import { Animacion } from './pages/user/animacion/animacion';
 import { Login } from './pages/user/login/login';
 import { Register } from './pages/user/register/register';
 import { Restablecer } from './pages/user/restablecer/restablecer';
+import { CodigoVerificacion } from './pages/user/codigo-verificacion/codigo-verificacion';
 
 export const routes: Routes = [
     // {
@@ -26,6 +27,10 @@ export const routes: Routes = [
     {
         path:"registro",
         component: Register
+    },
+    {
+        path:"verificacion",
+        component: CodigoVerificacion
     },
     {
         path:"restablecer",

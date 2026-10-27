@@ -3,11 +3,12 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthServiceLogin } from '../../../service/servicio-user/authServiceLogin';
+import { CodigoVerificacion } from '../codigo-verificacion/codigo-verificacion';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, CodigoVerificacion],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
@@ -29,6 +30,7 @@ export class Register {
   confirmarPassword: string = '';
 
   isLoading: boolean = false;
+  mostrarVerificacion: boolean = false;
 
   tiposDocumento = [
     { value: 'CC', label: 'Cédula de Ciudadanía (CC)' },
@@ -44,6 +46,8 @@ export class Register {
 
   constructor(private router: Router, private authService: AuthServiceLogin) {}
 
+  aceptarTerminos: boolean = false;
+
   registrar(form: any): void {
     if (form.invalid || this.isLoading) {
       Object.values(form.controls).forEach((control: any) => {
@@ -55,6 +59,11 @@ export class Register {
     if (this.password !== this.confirmarPassword) {
       form.controls['confirmarPassword']?.markAsTouched();
       alert('Las contraseñas no coinciden');
+      return;
+    }
+
+    if (!this.aceptarTerminos) {
+      alert('Debes aceptar los términos y condiciones');
       return;
     }
 
@@ -70,7 +79,6 @@ export class Register {
       rol: this.rol
     };
 
-    // Mostrar JSON quemado en consola
     console.log('Registro de usuario:', JSON.stringify(usuarioRegistro, null, 2));
 
     const registrado = this.authService.registrarUsuario({
@@ -88,8 +96,7 @@ export class Register {
 
     setTimeout(() => {
       this.isLoading = false;
-      alert('Registro exitoso. Ahora inicia sesión con tu nueva cuenta.');
-      this.irALogin();
+      this.mostrarVerificacion = true;
     }, 800);
   }
 

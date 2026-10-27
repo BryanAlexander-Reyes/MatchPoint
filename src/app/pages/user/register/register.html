@@ -268,11 +268,21 @@
         </div>
       </div>
 
+      <!-- TÉRMINOS Y CONDICIONES -->
+      <div class="terminos-group">
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            name="aceptarTerminos"
+          />
+          <span>Acepto los términos y condiciones</span>
+        </label>
+      </div>
+
       <!-- BOTÓN REGISTRAR -->
       <button
         type="submit"
         class="btn-primary"
-        [disabled]="registerForm.invalid || isLoading"
       >
         <span *ngIf="!isLoading">Registrarse</span>
         <span *ngIf="isLoading">Registrando...</span>

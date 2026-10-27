@@ -1,9 +1,3 @@
-/* ============================================================
-   ANIMACION
-   Contenedor único de login, registro y restablecer.
-   La paleta está definida en src/styles.css
-   ============================================================ */
-
 :host {
   display: block;
 }
@@ -28,85 +22,41 @@
   gap: clamp(2rem, 5vw, 4rem);
 }
 
-/* ---------- ESCENARIO DE LA ANIMACION ---------- */
 .animation-stage {
   display: flex;
   flex-direction: column;
   gap: clamp(1.25rem, 3vw, 2rem);
   min-width: 0;
-}
-
-.stage-eyebrow {
-  align-self: flex-start;
-  display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
-  padding: 0.4rem 0.85rem;
-  border-radius: 999px;
-  border: 1px solid rgba(34, 197, 94, 0.3);
-  background-color: rgba(34, 197, 94, 0.06);
-  color: var(--mp-green);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  justify-content: center;
 }
 
-.stage-eyebrow::before {
-  content: '';
-  width: 0.45rem;
-  height: 0.45rem;
-  border-radius: 50%;
-  background-color: var(--mp-green);
-  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.16);
-}
-
-.stage-copy h1 {
-  margin: 1rem 0 0.75rem;
-  font-size: clamp(2rem, 4.2vw, 3.15rem);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  color: var(--mp-text-primary);
-}
-
-.stage-copy h1 span {
-  color: var(--mp-green);
-}
-
-.stage-copy p {
-  margin: 0;
-  max-width: 42ch;
-  color: var(--mp-text-tertiary);
-  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
-  line-height: 1.6;
-}
-
-/* ===== ESPACIO PARA TU ANIMACION =====
-   Deja aquí tu SVG, Lottie, canvas o animación CSS.
-   El contenedor ya está centrado y se adapta a móvil. */
 .animation-slot {
   position: relative;
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: clamp(240px, 38vh, 400px);
-  overflow: hidden;
+  min-height: clamp(400px, 60vh, 600px);
+  overflow: visible;
   border-radius: 24px;
+  background: transparent;
 }
 
 .animation-slot::before {
-  content: '';
-  position: absolute;
-  inset: 12%;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, transparent 68%);
-  filter: blur(12px);
-  pointer-events: none;
+  display: none;
 }
 
-/* ---------- PANEL DE AUTENTICACION ---------- */
+.animacion-gif {
+  width: 100%;
+  max-width: 650px;
+  height: auto;
+  display: block;
+  background: transparent;
+  mix-blend-mode: screen;
+  filter: contrast(1.05) brightness(1.05);
+}
+
 .auth-panel {
   min-width: 0;
 }
@@ -117,8 +67,6 @@
   display: block;
 }
 
-/* Las páginas internas ya traen fondo y altura completa:
-   aquí las adaptamos para que vivan dentro del contenedor. */
 .auth-panel ::ng-deep .login-page,
 .auth-panel ::ng-deep .register-page,
 .auth-panel ::ng-deep .restablecer-page {
@@ -135,7 +83,6 @@
   max-width: 100%;
 }
 
-/* ---------- RESPONSIVE ---------- */
 @media (max-width: 980px) {
   .animacion-page {
     align-items: flex-start;
@@ -147,21 +94,12 @@
     gap: 1.75rem;
   }
 
-  .stage-copy {
-    text-align: center;
-  }
-
-  .stage-eyebrow {
-    align-self: center;
-  }
-
-  .stage-copy p {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
   .animation-slot {
-    min-height: 200px;
+    min-height: 300px;
+  }
+
+  .animacion-gif {
+    max-width: 450px;
   }
 }
 
@@ -170,257 +108,12 @@
     padding: 1rem;
   }
 
-  .stage-copy h1 {
-    font-size: clamp(1.6rem, 8vw, 2.15rem);
+  .animation-slot {
+    min-height: 250px;
+  }
+
+  .animacion-gif {
+    max-width: 350px;
   }
 }
 
-/* ============================================================
-   ANIMACIÓN CON PNG SEPARADOS - ENTRADA/SALIDA POR FRAME
-   public/animacion_login/login/animacion_01.png ... animacion_15.png
-   ============================================================ */
-
-.animation-slot {
-  overflow: visible;
-}
-
-.login-png-entrance {
-  position: relative;
-  z-index: 1;
-  width: min(320px, 80%);
-  height: min(480px, 70vh);
-  max-height: 420px;
-  aspect-ratio: 2 / 3;
-  will-change: transform;
-  animation: login-entrance-move 7s ease-in-out infinite alternate;
-}
-
-.login-frame {
-  position: absolute;
-  inset: 0;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
-  will-change: opacity, transform;
-}
-
-.frame-a {
-  opacity: 0;
-  animation: login-frame-a 3s ease-in-out infinite;
-}
-
-.frame-b {
-  opacity: 0;
-  animation: login-frame-b 3s ease-in-out infinite;
-}
-
-@keyframes login-frame-a {
-  0% {
-    opacity: 0;
-    transform: translateX(-18px) scale(0.98);
-    background-image: url('/animacion_login/login/animacion_01.png');
-  }
-  4% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  14% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  18% {
-    opacity: 0;
-    transform: translateX(18px) scale(0.98);
-    background-image: url('/animacion_login/login/animacion_01.png');
-  }
-  19% {
-    opacity: 0;
-    transform: translateX(-18px) scale(0.98);
-    background-image: url('/animacion_login/login/animacion_02.png');
-  }
-  23% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  35% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  39% {
-    opacity: 0;
-    transform: translateX(18px) scale(0.98);
-    background-image: url('/animacion_login/login/animacion_02.png');
-  }
-  40% {
-    opacity: 0;
-    transform: translateX(-18px) scale(0.98);
-    background-image: url('/animacion_login/login/animacion_03.png');
-  }
-  44% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  56% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  60% {
-    opacity: 0;
-    transform: translateX(18px) scale(0.98);
-    background-image: url('/animacion_login/login/animacion_03.png');
-  }
-  61% {
-    opacity: 0;
-    transform: translateX(-18px) scale(0.98);
-    background-image: url('/animacion_login/login/animacion_04.png');
-  }
-  65% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  77% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  81% {
-    opacity: 0;
-    transform: translateX(18px) scale(0.98);
-    background-image: url('/animacion_login/login/animacion_04.png');
-  }
-  82% {
-    opacity: 0;
-    transform: translateX(-18px) scale(0.98);
-    background-image: url('/animacion_login/login/animacion_05.png');
-  }
-  86% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-    background-image: url('/animacion_login/login/animacion_05.png');
-  }
-}
-
-@keyframes login-frame-b {
-  0% {
-    opacity: 0;
-    transform: translateX(-18px) scale(0.98);
-  }
-  18% {
-    opacity: 0;
-    transform: translateX(-18px) scale(0.98);
-  }
-  22% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-    background-image: url('/animacion_login/login/animacion_06.png');
-  }
-  34% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  38% {
-    opacity: 0;
-    transform: translateX(18px) scale(0.98);
-    background-image: url('/animacion_login/login/animacion_06.png');
-  }
-  39% {
-    opacity: 0;
-    transform: translateX(-18px) scale(0.98);
-    background-image: url('/animacion_login/login/animacion_07.png');
-  }
-  43% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  55% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  59% {
-    opacity: 0;
-    transform: translateX(18px) scale(0.98);
-    background-image: url('/animacion_login/login/animacion_07.png');
-  }
-  60% {
-    opacity: 0;
-    transform: translateX(-18px) scale(0.98);
-    background-image: url('/animacion_login/login/animacion_08.png');
-  }
-  64% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  76% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  80% {
-    opacity: 0;
-    transform: translateX(18px) scale(0.98);
-    background-image: url('/animacion_login/login/animacion_08.png');
-  }
-  81% {
-    opacity: 0;
-    transform: translateX(-18px) scale(0.98);
-    background-image: url('/animacion_login/login/animacion_09.png');
-  }
-  85% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  97% {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translateX(18px) scale(0.98);
-    background-image: url('/animacion_login/login/animacion_09.png');
-  }
-}
-
-@keyframes login-entrance-move {
-  0% {
-    transform: translateX(-12%);
-  }
-  100% {
-    transform: translateX(12%);
-  }
-}
-
-@media (max-width: 980px) {
-  .login-png-entrance {
-    height: min(380px, 55vh);
-    width: min(260px, 70%);
-  }
-
-  @keyframes login-entrance-move {
-    0% {
-      transform: translateX(-8%);
-    }
-    100% {
-      transform: translateX(8%);
-    }
-  }
-}
-
-@media (max-width: 560px) {
-  .login-png-entrance {
-    height: min(320px, 50vh);
-    width: min(220px, 75%);
-  }
-
-  @keyframes login-entrance-move {
-    0% {
-      transform: translateX(-6%);
-    }
-    100% {
-      transform: translateX(6%);
-    }
-  }
-}

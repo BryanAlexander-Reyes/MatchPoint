@@ -1,35 +1,11 @@
 <div class="animacion-page">
   <section class="animacion-shell" aria-label="Acceso a MATCH POINT">
-    <!-- ==========================================================
-         ESCENARIO IZQUIERDO
-         Aquí vive el espacio reservado para tu animación.
-         ========================================================== -->
     <aside class="animation-stage">
-      <div class="stage-copy">
-        <span class="stage-eyebrow">Reserva de canchas</span>
-        <h1>Tu próxima cancha,<span> a un clic.</span></h1>
-        <p>
-          Inicia sesión, crea tu cuenta o recupera tu acceso sin salir de esta
-          pantalla.
-        </p>
-      </div>
-
-      <!-- ==========================================================
-           ANIMACIÓN DE LOGIN
-           ========================================================== -->
       <div class="animation-slot" id="animation-slot">
-        <div class="login-png-entrance" aria-hidden="true">
-          <div class="login-frame frame-a"></div>
-          <div class="login-frame frame-b"></div>
-        </div>
+        <img src="/animacion_login/login/animacion_login.gif" alt="Animaci�n MatchPoint" class="animacion-gif" />
       </div>
     </aside>
 
-    <!-- ==========================================================
-         PANEL DERECHO: LOS TRES COMPONENTES EN UNO SOLO
-         Se muestra uno a la vez y los enlaces internos de cada
-         componente cambian la vista sin recargar la página.
-         ========================================================== -->
     <div class="auth-panel">
       <app-login
         *ngIf="vista === 'login'"
@@ -52,3 +28,4 @@
     </div>
   </section>
 </div>
+

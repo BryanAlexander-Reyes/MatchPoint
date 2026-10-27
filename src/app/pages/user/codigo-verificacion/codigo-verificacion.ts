@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-codigo-verificacion',
@@ -23,6 +24,14 @@ export class CodigoVerificacion {
   errorCodigo: string = '';
   infoCodigo: string = '';
 
+  constructor(private route: ActivatedRoute, private router: Router) {
+    this.route.queryParams.subscribe(params => {
+      if (params['correo']) {
+        this.correo = params['correo'];
+      }
+    });
+  }
+
   verificarCodigo(form: any): void {
     if (this.isLoading) return;
 
@@ -38,6 +47,8 @@ export class CodigoVerificacion {
     setTimeout(() => {
       if (this.codigo.trim() === this.CODIGO_FIJO) {
         this.isLoading = false;
+        alert('Código verificado correctamente. Registro completado.');
+        this.router.navigate(['/login']);
         this.codigoVerificado.emit();
         return;
       }
@@ -48,6 +59,7 @@ export class CodigoVerificacion {
   }
 
   onCambiarCorreo(): void {
+    this.router.navigate(['/registro']);
     this.cambiarCorreo.emit();
   }
 
