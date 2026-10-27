@@ -174,3 +174,253 @@
     font-size: clamp(1.6rem, 8vw, 2.15rem);
   }
 }
+
+/* ============================================================
+   ANIMACIÓN CON PNG SEPARADOS - ENTRADA/SALIDA POR FRAME
+   public/animacion_login/login/animacion_01.png ... animacion_15.png
+   ============================================================ */
+
+.animation-slot {
+  overflow: visible;
+}
+
+.login-png-entrance {
+  position: relative;
+  z-index: 1;
+  width: min(320px, 80%);
+  height: min(480px, 70vh);
+  max-height: 420px;
+  aspect-ratio: 2 / 3;
+  will-change: transform;
+  animation: login-entrance-move 7s ease-in-out infinite alternate;
+}
+
+.login-frame {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  will-change: opacity, transform;
+}
+
+.frame-a {
+  opacity: 0;
+  animation: login-frame-a 3s ease-in-out infinite;
+}
+
+.frame-b {
+  opacity: 0;
+  animation: login-frame-b 3s ease-in-out infinite;
+}
+
+@keyframes login-frame-a {
+  0% {
+    opacity: 0;
+    transform: translateX(-18px) scale(0.98);
+    background-image: url('/animacion_login/login/animacion_01.png');
+  }
+  4% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  14% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  18% {
+    opacity: 0;
+    transform: translateX(18px) scale(0.98);
+    background-image: url('/animacion_login/login/animacion_01.png');
+  }
+  19% {
+    opacity: 0;
+    transform: translateX(-18px) scale(0.98);
+    background-image: url('/animacion_login/login/animacion_02.png');
+  }
+  23% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  35% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  39% {
+    opacity: 0;
+    transform: translateX(18px) scale(0.98);
+    background-image: url('/animacion_login/login/animacion_02.png');
+  }
+  40% {
+    opacity: 0;
+    transform: translateX(-18px) scale(0.98);
+    background-image: url('/animacion_login/login/animacion_03.png');
+  }
+  44% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  56% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  60% {
+    opacity: 0;
+    transform: translateX(18px) scale(0.98);
+    background-image: url('/animacion_login/login/animacion_03.png');
+  }
+  61% {
+    opacity: 0;
+    transform: translateX(-18px) scale(0.98);
+    background-image: url('/animacion_login/login/animacion_04.png');
+  }
+  65% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  77% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  81% {
+    opacity: 0;
+    transform: translateX(18px) scale(0.98);
+    background-image: url('/animacion_login/login/animacion_04.png');
+  }
+  82% {
+    opacity: 0;
+    transform: translateX(-18px) scale(0.98);
+    background-image: url('/animacion_login/login/animacion_05.png');
+  }
+  86% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    background-image: url('/animacion_login/login/animacion_05.png');
+  }
+}
+
+@keyframes login-frame-b {
+  0% {
+    opacity: 0;
+    transform: translateX(-18px) scale(0.98);
+  }
+  18% {
+    opacity: 0;
+    transform: translateX(-18px) scale(0.98);
+  }
+  22% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    background-image: url('/animacion_login/login/animacion_06.png');
+  }
+  34% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  38% {
+    opacity: 0;
+    transform: translateX(18px) scale(0.98);
+    background-image: url('/animacion_login/login/animacion_06.png');
+  }
+  39% {
+    opacity: 0;
+    transform: translateX(-18px) scale(0.98);
+    background-image: url('/animacion_login/login/animacion_07.png');
+  }
+  43% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  55% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  59% {
+    opacity: 0;
+    transform: translateX(18px) scale(0.98);
+    background-image: url('/animacion_login/login/animacion_07.png');
+  }
+  60% {
+    opacity: 0;
+    transform: translateX(-18px) scale(0.98);
+    background-image: url('/animacion_login/login/animacion_08.png');
+  }
+  64% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  76% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  80% {
+    opacity: 0;
+    transform: translateX(18px) scale(0.98);
+    background-image: url('/animacion_login/login/animacion_08.png');
+  }
+  81% {
+    opacity: 0;
+    transform: translateX(-18px) scale(0.98);
+    background-image: url('/animacion_login/login/animacion_09.png');
+  }
+  85% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  97% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(18px) scale(0.98);
+    background-image: url('/animacion_login/login/animacion_09.png');
+  }
+}
+
+@keyframes login-entrance-move {
+  0% {
+    transform: translateX(-12%);
+  }
+  100% {
+    transform: translateX(12%);
+  }
+}
+
+@media (max-width: 980px) {
+  .login-png-entrance {
+    height: min(380px, 55vh);
+    width: min(260px, 70%);
+  }
+
+  @keyframes login-entrance-move {
+    0% {
+      transform: translateX(-8%);
+    }
+    100% {
+      transform: translateX(8%);
+    }
+  }
+}
+
+@media (max-width: 560px) {
+  .login-png-entrance {
+    height: min(320px, 50vh);
+    width: min(220px, 75%);
+  }
+
+  @keyframes login-entrance-move {
+    0% {
+      transform: translateX(-6%);
+    }
+    100% {
+      transform: translateX(6%);
+    }
+  }
+}
