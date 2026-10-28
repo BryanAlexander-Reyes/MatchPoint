@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservar cancha · Damero Canchas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/reservas.css">
+</head>
+<body>
+
+  <!-- ===================== NAVBAR ===================== -->
+  <header class="navbar">
+    <div class="navbar__inner">
+      <a class="logo" href="#" aria-label="Damero Canchas, inicio">
+        <span class="logo__icon" data-icon="logo"></span>
+        <span class="logo__text"><strong>DAMERO</strong><span>CANCHAS</span></span>
+      </a>
+
+      <nav class="nav" id="nav" aria-label="Principal">
+        <a href="#">Inicio</a>
+        <a href="#" class="is-active" aria-current="page">Canchas</a>
+        <a href="#">Mis reservas</a>
+        <a href="#">Torneos</a>
+        <a href="#">Promociones</a>
+        <a href="#">Contacto</a>
+      </nav>
+
+      <div class="navbar__user">
+        <button type="button" class="notif" aria-label="Notificaciones">
+          <span data-icon="bell"></span>
+          <span class="notif__badge" id="notifBadge">0</span>
+        </button>
+        <button type="button" class="user" aria-label="Menú de usuario">
+          <span class="user__avatar" id="userAvatar"></span>
+          <span class="user__name" id="userName"></span>
+          <span class="user__chevron" data-icon="chevronDown"></span>
+        </button>
+      </div>
+
+      <button type="button" class="navbar__toggle" id="btnMenu" aria-label="Abrir menú" aria-controls="nav" aria-expanded="false">
+        <span data-icon="menu"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===================== CONTENIDO ===================== -->
+  <main class="page">
+    <a href="#" class="back-link"><span data-icon="arrowLeft"></span>Volver a canchas</a>
+
+    <div class="layout">
+      <!-- Detalle de la cancha (se pinta desde JS con los datos de CANCHA) -->
+      <aside class="panel cancha" id="cancha" aria-label="Detalle de la cancha"></aside>
+
+      <div class="content">
+
+        <!-- ---------- Disponibilidad ---------- -->
+        <section class="panel disponibilidad" aria-labelledby="dispTitulo">
+          <header class="disponibilidad__header">
+            <h2 class="disponibilidad__title" id="dispTitulo">
+              <span data-icon="calendar"></span>
+              <span>Disponibilidad - <span id="tituloFecha"></span></span>
+            </h2>
+            <ul class="leyenda">
+              <li><span class="dot dot--disponible"></span>Disponible</li>
+              <li><span class="dot dot--reservada"></span>Reservada</li>
+              <li><span class="dot dot--no-disponible"></span>No disponible</li>
+            </ul>
+          </header>
+
+          <div class="horarios horarios--grid" id="horarios"></div>
+
+          <footer class="disponibilidad__footer">
+            <p class="nota"><span data-icon="info"></span>Los horarios están actualizados en tiempo real.</p>
+            <div class="vista" role="group" aria-label="Cambiar vista">
+              <span class="vista__label">Vista</span>
+              <button type="button" class="vista__btn is-active" data-vista="grid" aria-pressed="true" aria-label="Vista en cuadrícula">
+                <span data-icon="grid"></span>
+              </button>
+              <button type="button" class="vista__btn" data-vista="lista" aria-pressed="false" aria-label="Vista en lista">
+                <span data-icon="list"></span>
+              </button>
+            </div>
+          </footer>
+        </section>
+
+        <!-- ---------- Formulario de reserva ---------- -->
+        <form class="panel reserva" id="formReserva" novalidate>
+          <div class="reserva__body">
+            <h2 class="reserva__title">Completa los datos de tu reserva</h2>
+
+            <div class="form-grid">
+              <div class="field field--fecha">
+                <label class="field__label" for="fecha">Fecha</label>
+                <div class="control control--fecha">
+                  <span class="control__text" id="fechaTexto"></span>
+                  <input class="control__native" type="date" id="fecha" name="fecha" required>
+                  <span class="control__icon control__icon--right" data-icon="calendar"></span>
+                </div>
+              </div>
+
+              <div class="field field--hora">
+                <label class="field__label" for="hora">Hora</label>
+                <div class="control control--icon-right">
+                  <select id="hora" name="hora" required></select>
+                  <span class="control__icon control__icon--right" data-icon="clock"></span>
+                </div>
+                <p class="field__error" data-error="hora"></p>
+              </div>
+
+              <div class="field field--modalidad">
+                <label class="field__label" for="modalidad">Modalidad</label>
+                <div class="control control--icon-right">
+                  <select id="modalidad" name="modalidad"></select>
+                  <span class="control__icon control__icon--right" data-icon="chevronDown"></span>
+                </div>
+              </div>
+
+              <div class="field field--nombre">
+                <label class="field__label" for="nombre">Nombre del responsable</label>
+                <div class="control control--icon-left">
+                  <span class="control__icon control__icon--left" data-icon="user"></span>
+                  <input type="text" id="nombre" name="nombre" autocomplete="name" placeholder="Nombre y apellido" required>
+                </div>
+                <p class="field__error" data-error="nombre"></p>
+              </div>
+
+              <div class="field field--jugadores">
+                <label class="field__label" for="jugadores">Número de jugadores</label>
+                <div class="control control--icon-left">
+                  <span class="control__icon control__icon--left" data-icon="users"></span>
+                  <input type="number" id="jugadores" name="jugadores" min="1" inputmode="numeric" required>
+                </div>
+                <p class="field__error" data-error="jugadores"></p>
+              </div>
+
+              <div class="field field--correo">
+                <label class="field__label" for="correo">Correo electrónico</label>
+                <div class="control control--icon-left">
+                  <span class="control__icon control__icon--left" data-icon="mail"></span>
+                  <input type="email" id="correo" name="correo" autocomplete="email" placeholder="tucorreo@mail.com" required>
+                </div>
+                <p class="field__error" data-error="correo"></p>
+              </div>
+
+              <div class="field field--equipo">
+                <label class="field__label" for="equipo">¿Tienes equipo propio?</label>
+                <div class="control control--icon-left control--icon-right">
+                  <span class="control__icon control__icon--left" data-icon="shirt"></span>
+                  <select id="equipo" name="equipo">
+                    <option value="si">Sí</option>
+                    <option value="no">No</option>
+                  </select>
+                  <span class="control__icon control__icon--right" data-icon="chevronDown"></span>
+                </div>
+              </div>
+
+              <div class="field field--notas">
+                <label class="field__label" for="notas">Notas adicionales (opcional)</label>
+                <div class="control control--textarea">
+                  <textarea id="notas" name="notas" rows="2" maxlength="250" placeholder="Escribe aquí cualquier solicitud especial..."></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Resumen + total -->
+          <div class="reserva__footer">
+            <section class="resumen" aria-labelledby="resumenTitulo">
+              <h3 class="resumen__title" id="resumenTitulo">Resumen de tu reserva</h3>
+              <dl class="resumen__grid">
+                <div class="resumen__item">
+                  <dt><span class="resumen__icon" data-icon="calendar"></span>Cancha</dt>
+                  <dd id="resCancha"></dd>
+                </div>
+                <div class="resumen__item">
+                  <dt><span class="resumen__icon" data-icon="clock"></span>Hora</dt>
+                  <dd id="resHora"></dd>
+                </div>
+                <div class="resumen__item">
+                  <dt><span class="resumen__icon" data-icon="calendar"></span>Fecha</dt>
+                  <dd id="resFecha"></dd>
+                </div>
+                <div class="resumen__item">
+                  <dt><span class="resumen__icon" data-icon="ball"></span>Modalidad</dt>
+                  <dd id="resModalidad"></dd>
+                </div>
+              </dl>
+            </section>
+
+            <section class="total">
+              <div class="total__info">
+                <p class="total__label">Total a pagar</p>
+                <p class="total__monto" id="total" aria-live="polite"></p>
+                <p class="total__meta">Precio por hora: <span id="precioHora"></span></p>
+                <p class="total__meta">Duración: <span id="duracion"></span></p>
+              </div>
+              <div class="total__accion">
+                <button type="submit" class="btn btn--primary btn--lg" id="btnConfirmar">
+                  <span data-icon="lock"></span>Confirmar reserva
+                </button>
+                <p class="terminos">Al confirmar aceptas nuestros <a href="#">términos y condiciones</a>.</p>
+              </div>
+            </section>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ===================== MODAL CONFIRMACIÓN ===================== -->
+  <div class="modal" id="modal" hidden>
+    <div class="modal__overlay" data-cerrar></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+      <button type="button" class="modal__close" data-cerrar aria-label="Cerrar"><span data-icon="x"></span></button>
+      <div class="modal__icon"><span data-icon="check"></span></div>
+      <h2 id="modalTitulo">¡Reserva confirmada!</h2>
+      <p class="modal__sub">Te enviaremos el comprobante a <strong id="modalCorreo"></strong></p>
+      <span class="modal__codigo" id="modalCodigo"></span>
+      <dl class="modal__detalle" id="modalDetalle"></dl>
+      <div class="modal__acciones">
+        <button type="button" class="btn btn--ghost" data-cerrar>Seguir reservando</button>
+        <button type="button" class="btn btn--primary" id="btnVerReservas">Ver mis reservas</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TOAST ===================== -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/reservas.js"></script>
+</body>
+</html>
