@@ -1,0 +1,115 @@
+/* Modal que aparece cuando la reserva queda confirmada.
+   Los colores (--panel, --verde...) los define la página reservar-cancha. */
+
+:host {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+h2, p, dl, dd { margin: 0; }
+button { font: inherit; color: inherit; cursor: pointer; background: none; border: 0; padding: 0; }
+button:focus-visible { outline: 2px solid var(--verde-texto); outline-offset: 2px; }
+
+.modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(3, 7, 9, 0.72);
+  backdrop-filter: blur(4px);
+  animation: aparecer 0.2s ease;
+}
+
+.modal__dialog {
+  position: relative;
+  width: min(440px, 100%);
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  padding: 30px 28px 24px;
+  background: var(--panel);
+  border: 1px solid var(--borde-fuerte);
+  border-radius: var(--r-lg);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+  text-align: center;
+  animation: subir 0.25s ease;
+}
+
+.modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: var(--tinta-tenue);
+}
+.modal__close:hover { background: var(--panel-2); color: var(--tinta); }
+
+.modal__icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--verde-humo);
+  box-shadow: 0 0 0 8px rgba(34, 197, 94, 0.06);
+  color: var(--verde-texto);
+}
+
+h2 { font-size: 21px; font-weight: 700; }
+.modal__sub { margin-top: 6px; color: var(--tinta-2); overflow-wrap: anywhere; }
+
+.modal__codigo {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 6px 12px;
+  border: 1px dashed var(--verde-borde);
+  border-radius: 6px;
+  color: var(--verde-texto);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.modal__detalle { margin: 18px 0 22px; border: 1px solid var(--borde); border-radius: var(--r-md); text-align: left; }
+.modal__detalle div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--borde);
+  font-size: 13.5px;
+}
+.modal__detalle div:first-child { border-top: 0; }
+.modal__detalle dt { color: var(--tinta-tenue); }
+.modal__detalle dd { font-weight: 600; text-align: right; overflow-wrap: anywhere; }
+
+.modal__acciones { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.btn {
+  height: 44px;
+  padding: 0 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+.btn--primary { background: var(--verde); color: #fff; }
+.btn--primary:hover { background: var(--verde-hover); box-shadow: 0 8px 22px rgba(34, 197, 94, 0.28); }
+.btn--ghost { border: 1px solid var(--borde-fuerte); }
+.btn--ghost:hover { background: var(--panel-2); }
+
+@keyframes aparecer { from { opacity: 0; } }
+@keyframes subir { from { opacity: 0; transform: translateY(12px) scale(0.98); } }
+
+@media (max-width: 640px) {
+  .modal__dialog { padding: 26px 18px 18px; }
+  .modal__acciones { grid-template-columns: 1fr; }
+}

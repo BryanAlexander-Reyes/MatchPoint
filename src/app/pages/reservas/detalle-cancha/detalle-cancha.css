@@ -1,0 +1,106 @@
+/* Detalle de la cancha: foto, datos técnicos y lo que incluye.
+   Los colores (--panel, --tinta...) los define la página reservar-cancha. */
+
+:host {
+  display: grid;
+  gap: 18px;
+  padding: 18px;
+}
+
+h1, h3, p, dl, dd, figure { margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+
+.cancha__extra { display: grid; gap: 18px; }
+
+.cancha__media {
+  position: relative;
+  aspect-ratio: 330 / 185;
+  overflow: hidden;
+  border-radius: var(--r-md);
+  background: var(--fondo);
+}
+.cancha__media img,
+.cancha__media svg { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+.badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 4px 9px;
+  border-radius: 6px;
+  background: var(--verde);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 0 18px rgba(34, 197, 94, 0.55);
+}
+
+.cancha__nombre { margin-top: 18px; font-size: 27px; font-weight: 700; letter-spacing: -0.01em; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  background: var(--panel-2);
+  font-size: 13px;
+  font-weight: 500;
+}
+.chip app-icon { color: var(--verde-texto); }
+
+.cancha__desc { margin-top: 16px; color: var(--tinta-2); }
+
+.specs { display: grid; gap: 16px; padding: 20px 4px 4px; border-top: 1px solid var(--borde); }
+.specs__row { display: grid; grid-template-columns: 160px 1fr; gap: 8px; align-items: center; }
+.specs dt { display: flex; align-items: center; gap: 10px; color: var(--tinta-2); }
+.specs dt app-icon { color: var(--tinta-tenue); }
+.specs dd { color: var(--tinta-2); }
+
+.box {
+  padding: 18px;
+  border: 1px solid var(--borde);
+  border-radius: var(--r-md);
+  background: rgba(255, 255, 255, 0.012);
+}
+
+.incluye h3 { margin-bottom: 14px; font-size: 15px; font-weight: 600; }
+.incluye ul { display: grid; gap: 10px; }
+.incluye li { display: flex; align-items: center; gap: 12px; color: var(--tinta-2); }
+
+.check {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--verde);
+  color: #052e16;
+}
+
+.seguro { display: flex; align-items: center; gap: 16px; padding: 22px 18px; }
+.seguro__icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(34, 197, 94, 0.2), transparent 70%);
+  color: var(--verde-texto);
+}
+.seguro strong { display: block; font-size: 15px; font-weight: 600; }
+.seguro__sub { color: var(--tinta-2); }
+
+@media (max-width: 1100px) {
+  :host { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+  .specs { padding-top: 4px; border-top: 0; }
+}
+
+@media (max-width: 640px) {
+  :host { grid-template-columns: 1fr; padding: 16px; }
+  .specs__row { grid-template-columns: 140px 1fr; }
+}

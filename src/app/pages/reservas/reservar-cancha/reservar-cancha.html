@@ -1,0 +1,190 @@
+<div class="reserva-pagina">
+  <button type="button" class="back-link" (click)="volver()">
+    <app-icon nombre="arrow-left" [tamano]="16" />
+    {{ textoVolver }}
+  </button>
+
+  <div class="layout">
+    <!-- Detalle de la cancha -->
+    <app-detalle-cancha class="panel" [cancha]="cancha" aria-label="Detalle de la cancha" />
+
+    <div class="content">
+      <!-- Disponibilidad del día -->
+      <app-disponibilidad-cancha
+        class="panel"
+        [franjas]="franjas"
+        [fecha]="fecha"
+        [horaSeleccionada]="hora"
+        (seleccionar)="seleccionarFranja($event)"
+      />
+
+      <!-- ===================== Formulario de reserva ===================== -->
+      <form class="panel reserva" (ngSubmit)="confirmar()">
+        <div class="reserva__body">
+          <h2 class="reserva__title">{{ tituloFormulario }}</h2>
+
+          <div class="form-grid">
+            <div class="field field--fecha">
+              <label class="field__label" for="fecha">{{ labelFecha }}</label>
+              <div class="control control--fecha">
+                <span class="control__text">{{ fechaLarga }}</span>
+                <input
+                  #inputFecha
+                  class="control__native"
+                  type="date"
+                  id="fecha"
+                  [value]="fecha"
+                  [min]="fechaMinima"
+                  [max]="fechaMaxima"
+                  (change)="cambiarFecha(inputFecha)"
+                />
+                <app-icon class="control__icon control__icon--right" nombre="calendar" />
+              </div>
+            </div>
+
+            <div class="field field--hora" [class.field--error]="errores.hora">
+              <label class="field__label" for="hora">{{ labelHora }}</label>
+              <div class="control control--icon-right">
+                <select id="hora" name="hora" [ngModel]="hora" (ngModelChange)="seleccionarHora($event)">
+                  <option value="">{{ franjasDisponibles.length ? 'Selecciona un horario' : 'Sin horarios disponibles' }}</option>
+                  @for (franja of franjasDisponibles; track franja.inicio) {
+                    <option [value]="franja.inicio">{{ franja.inicio }} - {{ franja.fin }} ({{ textoDuracion }})</option>
+                  }
+                </select>
+                <app-icon class="control__icon control__icon--right" nombre="clock" />
+              </div>
+              @if (errores.hora) {
+                <p class="field__error">{{ errores.hora }}</p>
+              }
+            </div>
+
+            <div class="field field--modalidad">
+              <label class="field__label" for="modalidad">{{ labelModalidad }}</label>
+              <div class="control control--icon-right">
+                <select id="modalidad" name="modalidad" [(ngModel)]="modalidad">
+                  @for (opcion of modalidades; track opcion) {
+                    <option [value]="opcion">{{ opcion }}</option>
+                  }
+                </select>
+                <app-icon class="control__icon control__icon--right" nombre="chevron-down" />
+              </div>
+            </div>
+
+            <div class="field field--nombre" [class.field--error]="errores.nombre">
+              <label class="field__label" for="nombre">{{ labelNombre }}</label>
+              <div class="control control--icon-left">
+                <app-icon class="control__icon control__icon--left" nombre="user" />
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  autocomplete="name"
+                  [placeholder]="placeholderNombre"
+                  [(ngModel)]="nombre"
+                  (ngModelChange)="limpiarError('nombre')"
+                />
+              </div>
+              @if (errores.nombre) {
+                <p class="field__error">{{ errores.nombre }}</p>
+              }
+            </div>
+
+            <div class="field field--jugadores" [class.field--error]="errores.jugadores">
+              <label class="field__label" for="jugadores">{{ labelJugadores }}</label>
+              <div class="control control--icon-left">
+                <app-icon class="control__icon control__icon--left" nombre="users" />
+                <input
+                  type="number"
+                  id="jugadores"
+                  name="jugadores"
+                  min="1"
+                  inputmode="numeric"
+                  [max]="cancha.capacidadMax"
+                  [(ngModel)]="jugadores"
+                  (ngModelChange)="limpiarError('jugadores')"
+                />
+              </div>
+              @if (errores.jugadores) {
+                <p class="field__error">{{ errores.jugadores }}</p>
+              }
+            </div>
+
+            <div class="field field--correo" [class.field--error]="errores.correo">
+              <label class="field__label" for="correo">{{ labelCorreo }}</label>
+              <div class="control control--icon-left">
+                <app-icon class="control__icon control__icon--left" nombre="mail" />
+                <input
+                  type="email"
+                  id="correo"
+                  name="correo"
+                  autocomplete="email"
+                  [placeholder]="placeholderCorreo"
+                  [(ngModel)]="correo"
+                  (ngModelChange)="limpiarError('correo')"
+                />
+              </div>
+              @if (errores.correo) {
+                <p class="field__error">{{ errores.correo }}</p>
+              }
+            </div>
+
+            <div class="field field--equipo">
+              <label class="field__label" for="equipo">{{ labelEquipo }}</label>
+              <div class="control control--icon-left control--icon-right">
+                <app-icon class="control__icon control__icon--left" nombre="shirt" />
+                <select id="equipo" name="equipo" [(ngModel)]="equipoPropio">
+                  <option value="si">Sí</option>
+                  <option value="no">No</option>
+                </select>
+                <app-icon class="control__icon control__icon--right" nombre="chevron-down" />
+              </div>
+            </div>
+
+            <div class="field field--notas">
+              <label class="field__label" for="notas">{{ labelNotas }}</label>
+              <div class="control control--textarea">
+                <textarea
+                  id="notas"
+                  name="notas"
+                  rows="2"
+                  maxlength="250"
+                  [placeholder]="placeholderNotas"
+                  [(ngModel)]="notas"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resumen + total -->
+        <app-resumen-reserva
+          [cancha]="cancha.nombre"
+          [hora]="textoHora"
+          [fecha]="fechaCorta"
+          [modalidad]="modalidad"
+          [total]="total"
+          [precioHora]="cancha.precioHora"
+          [duracion]="textoDuracion"
+          [procesando]="procesando()"
+        />
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación -->
+@if (reservaConfirmada(); as reserva) {
+  <app-confirmacion-reserva
+    [reserva]="reserva"
+    (cerrar)="cerrarModal()"
+    (verReservas)="verMisReservas()"
+  />
+}
+
+<!-- Mensaje flotante -->
+@if (mensaje(); as aviso) {
+  <div class="toast" [class.toast--error]="aviso.tipo === 'error'" role="status">
+    <app-icon [nombre]="aviso.tipo === 'error' ? 'alert-circle' : 'check'" />
+    <span>{{ aviso.texto }}</span>
+  </div>
+}

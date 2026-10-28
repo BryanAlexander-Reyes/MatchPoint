@@ -1,0 +1,83 @@
+<div class="cancha__main">
+  <figure class="cancha__media">
+    @if (cancha.imagen) {
+      <img [src]="cancha.imagen" [alt]="'Foto de ' + cancha.nombre" />
+    } @else {
+      <svg viewBox="0 0 330 190" preserveAspectRatio="xMidYMid slice" role="img" [attr.aria-label]="'Ilustración de ' + cancha.nombre">
+        <defs>
+          <linearGradient id="gFondo" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#0a1311" /><stop offset="1" stop-color="#1d2a24" />
+          </linearGradient>
+          <linearGradient id="gPasto" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#2f8a3c" /><stop offset="1" stop-color="#1c5f28" />
+          </linearGradient>
+          <radialGradient id="gLuz">
+            <stop offset="0" stop-color="#fffbe6" stop-opacity=".95" />
+            <stop offset=".25" stop-color="#fff6c8" stop-opacity=".45" />
+            <stop offset="1" stop-color="#fff6c8" stop-opacity="0" />
+          </radialGradient>
+          <pattern id="pMalla" width="6" height="6" patternUnits="userSpaceOnUse">
+            <path d="M0 0L6 6M6 0L0 6" stroke="#9fb3a8" stroke-width=".35" opacity=".35" />
+          </pattern>
+        </defs>
+        <rect width="330" height="190" fill="url(#gFondo)" />
+        <path d="M0 40 L165 4 L330 40 M40 31 V0 M100 18 V0 M230 18 V0 M290 31 V0" stroke="#3a4a42" stroke-width="1" fill="none" opacity=".6" />
+        <rect x="0" y="62" width="330" height="36" fill="#56584e" opacity=".55" />
+        <rect x="0" y="40" width="330" height="58" fill="url(#pMalla)" />
+        <polygon points="34,96 296,96 420,190 -90,190" fill="url(#gPasto)" />
+        @for (franja of franjasCesped; track $index) {
+          <polygon [attr.points]="franja" fill="#fff" opacity=".05" />
+        }
+        <g fill="none" stroke="#e9f5ec" stroke-width="1.1" opacity=".75">
+          <polygon points="52,101 278,101 372,184 -42,184" />
+          <line x1="165" y1="101" x2="165" y2="184" />
+          <ellipse cx="165" cy="140" rx="36" ry="12" />
+        </g>
+        @for (luz of luces; track $index) {
+          <circle [attr.cx]="luz[0]" [attr.cy]="luz[1]" r="16" fill="url(#gLuz)" />
+          <circle [attr.cx]="luz[0]" [attr.cy]="luz[1]" r="2.4" fill="#fff" />
+        }
+      </svg>
+    }
+    <span class="badge">{{ cancha.nombre }}</span>
+  </figure>
+
+  <h1 class="cancha__nombre">{{ cancha.nombre }}</h1>
+  <ul class="chips">
+    <li class="chip"><app-icon nombre="sprout" [tamano]="14" />{{ cancha.superficie }}</li>
+    <li class="chip"><app-icon nombre="home" [tamano]="14" />{{ cancha.cubierta }}</li>
+    <li class="chip"><app-icon nombre="ball" [tamano]="14" />{{ cancha.modalidad }}</li>
+  </ul>
+  <p class="cancha__desc">{{ cancha.descripcion }}</p>
+</div>
+
+<div class="cancha__extra">
+  <dl class="specs">
+    @for (spec of especificaciones; track spec.etiqueta) {
+      <div class="specs__row">
+        <dt><app-icon [nombre]="spec.icono" />{{ spec.etiqueta }}</dt>
+        <dd>{{ spec.valor }}</dd>
+      </div>
+    }
+  </dl>
+
+  <div class="box incluye">
+    <h3>{{ textoIncluye }}</h3>
+    <ul>
+      @for (item of cancha.incluye; track item) {
+        <li>
+          <span class="check"><app-icon nombre="check" [tamano]="11" [grosor]="3.5" /></span>
+          {{ item }}
+        </li>
+      }
+    </ul>
+  </div>
+
+  <div class="box seguro">
+    <span class="seguro__icon"><app-icon nombre="shield-check" [tamano]="26" /></span>
+    <div>
+      <strong>{{ textoPagoSeguro }}</strong>
+      <span class="seguro__sub">{{ textoDatosProtegidos }}</span>
+    </div>
+  </div>
+</div>

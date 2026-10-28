@@ -1,0 +1,42 @@
+<section class="resumen" aria-labelledby="resumenTitulo">
+  <h3 class="resumen__title" id="resumenTitulo">{{ tituloResumen }}</h3>
+  <dl class="resumen__grid">
+    <div class="resumen__item">
+      <dt><app-icon class="resumen__icon" nombre="calendar" [tamano]="22" [grosor]="1.6" />Cancha</dt>
+      <dd>{{ cancha }}</dd>
+    </div>
+    <div class="resumen__item">
+      <dt><app-icon class="resumen__icon" nombre="clock" [tamano]="22" [grosor]="1.6" />Hora</dt>
+      <dd>{{ hora }}</dd>
+    </div>
+    <div class="resumen__item">
+      <dt><app-icon class="resumen__icon" nombre="calendar" [tamano]="22" [grosor]="1.6" />Fecha</dt>
+      <dd>{{ fecha }}</dd>
+    </div>
+    <div class="resumen__item">
+      <dt><app-icon class="resumen__icon" nombre="ball" [tamano]="22" [grosor]="1.6" />Modalidad</dt>
+      <dd>{{ modalidad }}</dd>
+    </div>
+  </dl>
+</section>
+
+<section class="total">
+  <div class="total__info">
+    <p class="total__label">{{ textoTotal }}</p>
+    <p class="total__monto" aria-live="polite">{{ total | moneda }}</p>
+    <p class="total__meta">Precio por hora: {{ precioHora | moneda }}</p>
+    <p class="total__meta">Duración: {{ duracion }}</p>
+  </div>
+  <div class="total__accion">
+    <button type="submit" class="btn" [disabled]="procesando">
+      @if (procesando) {
+        <span class="spinner" aria-hidden="true"></span>
+        Procesando…
+      } @else {
+        <app-icon nombre="lock" />
+        {{ textoBotonConfirmar }}
+      }
+    </button>
+    <p class="terminos">{{ textoTerminos }} <a href="#">términos y condiciones</a>.</p>
+  </div>
+</section>

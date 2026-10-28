@@ -1,0 +1,60 @@
+<header class="disponibilidad__header">
+  <h2 class="disponibilidad__title">
+    <app-icon nombre="calendar" [tamano]="22" />
+    <span>{{ tituloDisponibilidad }} - {{ fechaTexto }}</span>
+  </h2>
+  <ul class="leyenda">
+    @for (item of leyenda; track item.estado) {
+      <li><span class="dot" [class]="'dot--' + item.estado"></span>{{ item.texto }}</li>
+    }
+  </ul>
+</header>
+
+<div class="horarios" [class.horarios--lista]="vista === 'lista'">
+  @for (franja of franjas; track franja.inicio) {
+    <button
+      type="button"
+      class="slot"
+      [class]="'slot--' + franja.estado"
+      [class.is-selected]="franja.inicio === horaSeleccionada"
+      [attr.aria-pressed]="franja.inicio === horaSeleccionada"
+      [attr.aria-disabled]="franja.estado !== 'disponible' ? 'true' : null"
+      [attr.aria-label]="franja.inicio + ' a ' + franja.fin + ', ' + textoEstado(franja)"
+      (click)="seleccionar.emit(franja)"
+    >
+      <span class="slot__hora">{{ franja.inicio }} - {{ franja.fin }}</span>
+      <span class="slot__icono"><app-icon [nombre]="iconoEstado(franja)" [tamano]="vista === 'lista' ? 20 : 28" /></span>
+      <span class="slot__estado">{{ textoEstado(franja) }}</span>
+      @if (franja.inicio === horaSeleccionada) {
+        <span class="slot__check"><app-icon nombre="check" [tamano]="11" [grosor]="3.5" /></span>
+      }
+    </button>
+  }
+</div>
+
+<footer class="disponibilidad__footer">
+  <p class="nota"><app-icon nombre="info" [tamano]="20" />{{ textoTiempoReal }}</p>
+  <div class="vista" role="group" aria-label="Cambiar vista">
+    <span class="vista__label">Vista</span>
+    <button
+      type="button"
+      class="vista__btn"
+      [class.is-active]="vista === 'grid'"
+      [attr.aria-pressed]="vista === 'grid'"
+      aria-label="Vista en cuadrícula"
+      (click)="cambiarVista('grid')"
+    >
+      <app-icon nombre="grid" />
+    </button>
+    <button
+      type="button"
+      class="vista__btn"
+      [class.is-active]="vista === 'lista'"
+      [attr.aria-pressed]="vista === 'lista'"
+      aria-label="Vista en lista"
+      (click)="cambiarVista('lista')"
+    >
+      <app-icon nombre="list" />
+    </button>
+  </div>
+</footer>

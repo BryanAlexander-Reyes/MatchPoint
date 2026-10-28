@@ -1,0 +1,23 @@
+<div class="modal__overlay" (click)="cerrar.emit()"></div>
+<div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+  <button type="button" class="modal__close" aria-label="Cerrar" (click)="cerrar.emit()">
+    <app-icon nombre="x" />
+  </button>
+  <div class="modal__icon"><app-icon nombre="check" [tamano]="30" [grosor]="2.6" /></div>
+  <h2 id="modalTitulo">{{ titulo }}</h2>
+  <p class="modal__sub">{{ textoComprobante }} <strong>{{ reserva.correo }}</strong></p>
+  <span class="modal__codigo">{{ reserva.codigo }}</span>
+  <dl class="modal__detalle">
+    <div><dt>Cancha</dt><dd>{{ reserva.cancha }}</dd></div>
+    <div><dt>Fecha</dt><dd>{{ formatearFecha(reserva.fecha) }}</dd></div>
+    <div><dt>Hora</dt><dd>{{ reserva.horaInicio }} - {{ reserva.horaFin }}</dd></div>
+    <div><dt>Modalidad</dt><dd>{{ reserva.modalidad }}</dd></div>
+    <div><dt>Responsable</dt><dd>{{ reserva.responsable }}</dd></div>
+    <div><dt>Jugadores</dt><dd>{{ reserva.jugadores }}</dd></div>
+    <div><dt>Total</dt><dd>{{ reserva.total | moneda }}</dd></div>
+  </dl>
+  <div class="modal__acciones">
+    <button #btnSeguir type="button" class="btn btn--ghost" (click)="cerrar.emit()">{{ textoSeguir }}</button>
+    <button type="button" class="btn btn--primary" (click)="verReservas.emit()">{{ textoVerReservas }}</button>
+  </div>
+</div>
